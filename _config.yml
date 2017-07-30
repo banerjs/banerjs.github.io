@@ -28,6 +28,7 @@ exclude:
   - Gemfile.lock
   - blog.sublime-project
   - blog.sublime-workspace
+  - README.md
 
 # Permalink styles
 permalink: /:categories/:year/:month/:title/
