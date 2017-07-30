@@ -1,0 +1,15 @@
+<header>
+    <div class="container">
+        <div class="intro">
+            <p class="intro__pre">Hello</p>
+            <p class="intro__main">My name is <span>{{ site.name }}</span>, a {{ site.job }}</p>
+            <p class="intro__post">{{ site.location }}</p>
+        </div>
+
+        <div class="social">
+            {{ if site.github_username }}<a href="http://github.com/{{ site.github_username }}" target="_blank">GitHub</a>{{ endif }}
+            {{ if site.linkedin_username }}<a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" target="_blank">LinkedIn</a>{{ endif }}
+            {{ if site.email }}<a href="mailto:{{ site.email }}" target="_blank">Email</a>{{ endif }}
+        </div>
+    </div>
+</header>
