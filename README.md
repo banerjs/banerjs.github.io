@@ -8,6 +8,7 @@ This website runs on Jekyll and uses the [jekyll-resume](https://github.com/matt
 
 ## TODO
 
-- Incorporate automatic `bibtex` compilation into the data directory for inclusion into the CV. We can use jekyll-scholar for that purpose
-- Create YAML files for the different sections of the resume
-- Create an automated build from bibtex to YAML/MD so that github pages can display the site
+- Fix the DNS records for the site
+- Create YAML files for the different sections of the resume, and fill them out
+- Create a travis build for building the bibtex
+- Add an image to the Resume

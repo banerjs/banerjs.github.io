@@ -14,14 +14,16 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Curriculum Vitae
-email: banerjs.sid@banerjs.com
 description: > # this means to ignore newlines until "baseurl:"
   Robotics graduate student at Georgia Tech.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://banerjs.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Data for Resume
 name: "Siddhartha Banerjee"
 job: "Roboticist-In-Training"
 location: "Atlanta, GA, USA"
+email: banerjs.sid@banerjs.com
 github_username: "banerjs"
 linkedin_username: "banerjs"
 
@@ -38,3 +40,14 @@ exclude:
 
 # Permalink styles
 permalink: /:categories/:year/:month/:title/
+
+# Citations
+scholar:
+  style: ieee
+  sort_by: year
+  order: descending
+  bibtex_filters:
+    - latex
+    - smallcaps
+    - superscript
+  bibliography_template: bib

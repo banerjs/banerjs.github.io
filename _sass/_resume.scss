@@ -11,6 +11,16 @@ dt, dd {
     margin-bottom: $spacer;
 }
 
+ol {
+    margin-bottom: $spacer;
+}
+
+li {
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: $spacer;
+}
+
 @media(min-width: 640px) {
     dt, dd {
         margin-bottom: 60px;
@@ -47,5 +57,11 @@ a {
     &:hover {
         background: rgba(245, 215, 110, 1);
         text-decoration: none;
+    }
+}
+
+.description {
+    a {
+        background: white;
     }
 }

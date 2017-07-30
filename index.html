@@ -11,21 +11,24 @@ layout: resume
             <p class="period">{{ qualification.period }}</p>
         </dt><!--
         --><dd>
-            <p>{{ qualification.description }}</p>
+            <p class="description">{{ qualification.description }}</p>
         </dd>
     {% endfor %}
 </dl>
 
 <h3 class="section-title">Experience</h3>
 <dl class="experience">
-    {% for job in site.data.jobs %}
+    {% for job in site.data.experience %}
         <dt>
             <p class="title">{{ job.title }}</p>
             <p class="company">{{ job.company }}</p>
             <p class="period">{{ job.period }}</p>
         </dt><!--
         --><dd>
-            <p>{{ job.description }}</p>
+            <p class="description">{{ job.description }}</p>
         </dd>
     {% endfor %}
 </dl>
+
+<h3 class="section-title">Publications</h3>
+{% bibliography --file resume %}
