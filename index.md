@@ -1,5 +1,3 @@
 ---
 ---
 
-# Siddhartha Banerjee
-
