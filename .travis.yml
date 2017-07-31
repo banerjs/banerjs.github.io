@@ -1,0 +1,16 @@
+language: ruby
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq rsync
+
+install:
+  - bundle install
+
+script:
+  - bundle exec jekyll build
+  - rsync -avm --include='*.html' --include='*.md' -f 'hide,! */' _site/ ./
+  - git checkout master
+  - git add -A .
+  - git commit -am "Build at $(date)"
+  - git push origin master
