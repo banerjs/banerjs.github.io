@@ -40,6 +40,7 @@ exclude:
   - blog.sublime-project
   - blog.sublime-workspace
   - README.md
+  - scripts/
 
 # Permalink styles
 permalink: /:categories/:year/:month/:title/
