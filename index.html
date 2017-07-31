@@ -2,6 +2,7 @@
 layout: resume
 ---
 
+<section>
 <h3 class="section-title">Education</h3>
 <dl class="education">
     {% for qualification in site.data.education %}
@@ -15,8 +16,15 @@ layout: resume
         </dd>
     {% endfor %}
 </dl>
+</section>
 
-<h3 class="section-title">Experience</h3>
+<section>
+<h3 class="section-title">Publications</h3>
+{% bibliography --file resume %}
+</section>
+
+<section>
+<h3 class="section-title">Work Experience</h3>
 <dl class="experience">
     {% for job in site.data.experience %}
         <dt>
@@ -29,6 +37,4 @@ layout: resume
         </dd>
     {% endfor %}
 </dl>
-
-<h3 class="section-title">Publications</h3>
-{% bibliography --file resume %}
+</section>

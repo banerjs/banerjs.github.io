@@ -13,26 +13,22 @@ dt, dd {
 
 ol {
     margin-bottom: $spacer;
-}
 
-li {
-    display: inline-block;
-    vertical-align: top;
-    margin-bottom: $spacer;
+    li {
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: $spacer;
+    }
 }
 
 @media(min-width: 640px) {
-    dt, dd {
-        margin-bottom: 60px;
-    }
-
     .experience {
         dt {
-            width: 30%;
+            width: 40%;
             padding-right: ($spacer * 2);
         }
         dd {
-            width: 70%;
+            width: 60%;
         }
     }
 
