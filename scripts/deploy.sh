@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e # Exit with nonzero exit code if anything fails
 
-echo $(pwd)
-exit 1
-
 SOURCE_BRANCH="devel"
 TARGET_BRANCH="master"
 
