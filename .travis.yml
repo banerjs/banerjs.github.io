@@ -5,16 +5,15 @@ rvm:
 
 env:
   global:
-    - ENCRYPTION_LABEL: "2aabbcf4605b"
-    - COMMIT_AUTHOR_EMAIL: "banerjs@banerjs.com"
+  - ENCRYPTION_LABEL: afb3f4a0fd37
+  - COMMIT_AUTHOR_EMAIL: banerjs@banerjs.com
 
 branches:
   except:
-    - master
+  - master
 
 before_install:
-  - echo $(pwd)
-  - openssl aes-256-cbc -K $encrypted_2aabbcf4605b_key -iv $encrypted_2aabbcf4605b_iv -in deploy_key.enc -out deploy_key -d
+  - openssl aes-256-cbc -K $encrypted_afb3f4a0fd37_key -iv $encrypted_afb3f4a0fd37_iv -in deploy_key.enc -out deploy_key -d
   - sudo apt-get update -qq
   - sudo apt-get install -qq rsync
 
