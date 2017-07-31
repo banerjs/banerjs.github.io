@@ -8,7 +8,6 @@ This website runs on Jekyll and uses the [jekyll-resume](https://github.com/matt
 
 ## TODO
 
-- Fix the DNS records for the site
 - Create YAML files for the different sections of the resume, and fill them out
 - Make more extensible YAML for description fields
 
