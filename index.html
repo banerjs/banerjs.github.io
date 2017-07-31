@@ -1,40 +1,153 @@
----
-layout: resume
----
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<section>
+    <title>Curriculum Vitae</title>
+    <meta name="description" content="Robotics graduate student at Georgia Tech.
+">
+
+    <link rel="stylesheet" href="/css/resume.css">
+    <link rel="canonical" href="https://banerjs.github.io/">
+    <link rel="alternate" type="application/rss+xml" title="Curriculum Vitae" href="https://banerjs.github.io/feed.xml">
+</head>
+
+    <body>
+        <header>
+    <div class="container">
+        <div class="image">
+            <img src="/assets/images/mugshot.jpg" alt="profile picture">
+        </div>
+
+        <div class="intro">
+            <p class="intro__pre">Hello</p>
+            <p class="intro__main">My name is <span>Siddhartha Banerjee</span>, a Roboticist-In-Training</p>
+            <p class="intro__post">Atlanta, GA, USA</p>
+        </div>
+
+        <div class="social">
+            <a href="http://github.com/banerjs" target="_blank">GitHub</a>
+            <a href="mailto:banerjs.sid@banerjs.com" target="_blank">Email</a>
+            <a href="https://www.linkedin.com/in/banerjs" target="_blank">LinkedIn</a>
+            <a href="https://scholar.google.com/citations?user=OoqdqrYAAAAJ&hl=en" target="_blank">Scholar</a>
+            <a href="https://www.researchgate.net/profile/Siddhartha_Banerjee5" target="_blank">ResearchGate</a>
+            <a href="https://www.goodreads.com/user/show/41408373-siddhartha-banerjee" target="_blank">Goodreads</a>
+        </div>
+    </div>
+</header>
+
+        <div class="container">
+            <section>
 <h3 class="section-title">Education</h3>
 <dl class="education">
-    {% for qualification in site.data.education %}
+    
         <dt>
-            <p class="title">{{ qualification.qualification }}</p>
-            <p class="company">{{ qualification.school }}</p>
-            <p class="period">{{ qualification.period }}</p>
+            <p class="title">Ph.D. Robotics</p>
+            <p class="company">Georgia Institute of Technology</p>
+            <p class="period">2015 - current</p>
         </dt><!--
         --><dd>
-            <p class="description">{{ qualification.description }}</p>
+            <p class="description">Member of the <a href="http://www.rail.gatech.edu/" target="_blank">RAIL Lab</a><br/>Advised by <a href="https://www.cc.gatech.edu/~chernova/" target="_blank">Dr. Sonia Chernova</a><br/>Working on collocated Human-Robot Interaction</p>
         </dd>
-    {% endfor %}
+    
+        <dt>
+            <p class="title">B.S. Electrical Engineering/Computer Science</p>
+            <p class="company">Yale University</p>
+            <p class="period">2009 - 2013</p>
+        </dt><!--
+        --><dd>
+            <p class="description">Graduated with Distinction in Major<br/>Member of Timothy Dwight College</p>
+        </dd>
+    
 </dl>
 </section>
 
 <section>
 <h3 class="section-title">Publications</h3>
-{% bibliography --file resume %}
+<ol class="bibliography"><li><span id="aamas-2017">[1]S. Banerjee and S. Chernova, “Temporal Models for Robot Classification of Human Interruptibility,” in <i>Int. Conf. on Autonomous Agents &amp; Multiagent Systems</i>, 2017, no. 16, pp. 1350–1359.</span>
+
+<span><a href="http://www.aamas2017.org/proceedings/pdfs/p1350.pdf" target="_blank">link</a></span>
+
+</li>
+<li><span id="harrison-ijcai-iml-2016">[2]B. Harrison, S. Banerjee, and M. O. Riedl, “Learning from Stories: Using Natural Communication to Train Believable Agents,” <i>IJCAI 2016 - Workshop on Interactive Machine Learning</i>, 2016.</span>
+
+<span><a href="https://www.cc.gatech.edu/ riedl/pubs/ijcai-iml16.pdf" target="_blank">link</a></span>
+
+</li>
+<li><span id="rss-planning-hri-2016">[3]S. Banerjee and S. Chernova, “Robots predicting the Interruptibility of Humans,” <i>RSS Workshop on Planning for HRI</i>, 2016.</span>
+
+<span><a href="https://people.csail.mit.edu/cdarpino/RSS2016WorkshopHRcolla/abstracts/RSS16WS_10_PredictingInterruptibility.pdf" target="_blank">link</a></span>
+
+</li></ol>
 </section>
 
 <section>
 <h3 class="section-title">Work Experience</h3>
 <dl class="experience">
-    {% for job in site.data.experience %}
+    
         <dt>
-            <p class="title">{{ job.title }}</p>
-            <p class="company">{{ job.company }}</p>
-            <p class="period">{{ job.period }}</p>
+            <p class="title">Research Intern</p>
+            <p class="company">Microsoft</p>
+            <p class="period">Summer 2017</p>
         </dt><!--
         --><dd>
-            <p class="description">{{ job.description }}</p>
+            <p class="description"><ul><li>Worked with Situated Interaction Group</li><li>Setup a system for in-the-wild activity recognition, with a focus on interaction</li></ul></p>
         </dd>
-    {% endfor %}
+    
+        <dt>
+            <p class="title">Software Engineer</p>
+            <p class="company">Redfin</p>
+            <p class="period">2013 - 2015</p>
+        </dt><!--
+        --><dd>
+            <p class="description"><ul><li>Employee of the Quarter (Q3 2014)</li><li>Designed and maintained ETL pipeline for house listing data</li><li>Integrated 3<sup>rd</sup> party GIS data</li><li>Calculated and displayed aggregate housing data for regions</li><li>Maintained internal tools for managing agents and locations</p>
+        </dd>
+    
+        <dt>
+            <p class="title">Hardware Verification Intern</p>
+            <p class="company">Microsoft</p>
+            <p class="period">Summer 2012</p>
+        </dt><!--
+        --><dd>
+            <p class="description"><ul><li>VLSI hardware verification and testing for the Xbox One</li><li>Used waveform analysis and Kernel Developer Specifications to test a System-on-Chip</li></ul></p>
+        </dd>
+    
+        <dt>
+            <p class="title">Teaching Assistant</p>
+            <p class="company">CS 6601, Georgia Tech</p>
+            <p class="period">Fall 2016</p>
+        </dt><!--
+        --><dd>
+            <p class="description"><ul><li>TA for graduate course on Artificial Intelligence</li></ul></p>
+        </dd>
+    
+        <dt>
+            <p class="title">Peer Tutor</p>
+            <p class="company">CPSC 202/223, Yale</p>
+            <p class="period">2012 - 2013</p>
+        </dt><!--
+        --><dd>
+            <p class="description"><ul><li>Peer tutor for undergraduates needing further assistance</li><li>CSPSC 202&#58; Mathematical Tools for Computer Science</li><li>CPSC 223&#58; Data Structures and Programming Techniques</li></ul></p>
+        </dd>
+    
 </dl>
 </section>
+
+        </div>
+        <footer class="footer">
+	<p class="footer__credits">Theme credits to: <a href="https://github.com/mattcouchman/jekyll-resume" target="_blank">jekyll-resume</a></p class="footer__credits">
+</footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55423513-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>
