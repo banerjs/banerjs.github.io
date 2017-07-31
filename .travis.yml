@@ -3,6 +3,11 @@ rvm:
   - 2.2
   - 2.4
 
+env:
+  global:
+    - ENCRYPTION_LABEL: "2aabbcf4605b"
+    - COMMIT_AUTHOR_EMAIL: "banerjs@banerjs.com"
+
 branches:
   except:
     - master
