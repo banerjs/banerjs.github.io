@@ -1,24 +1,37 @@
 - title: Research Intern
   company: Microsoft
   period: Summer 2017
-  description: <ul><li>Worked with Situated Interaction Group</li><li>Setup a system for in-the-wild activity recognition, with a focus on interaction</li></ul>
+  description: |-
+    - Worked with Situated Interaction Group
+    - Setup a system for in-the-wild activity recognition, with a focus on interaction
 
 - title: Software Engineer
   company: Redfin
   period: 2013 - 2015
-  description: <ul><li>Employee of the Quarter (Q3 2014)</li><li>Designed and maintained ETL pipeline for house listing data</li><li>Integrated 3<sup>rd</sup> party GIS data</li><li>Calculated and displayed aggregate housing data for regions</li><li>Maintained internal tools for managing agents and locations
+  description: |-
+    - Employee of the Quarter (Q3 2014)
+    - Designed and maintained ETL pipeline for house listing data
+    - Integrated 3rd party GIS data
+    - Calculated and displayed aggregate housing data for regions
+    - Maintained internal tools for managing agents and locations
 
 - title: Hardware Verification Intern
   company: Microsoft
   period: Summer 2012
-  description: <ul><li>VLSI hardware verification and testing for the Xbox One</li><li>Used waveform analysis and Kernel Developer Specifications to test a System-on-Chip</li></ul>
+  description: |-
+    - VLSI hardware verification and testing for the Xbox One
+    - Used waveform analysis and Kernel Developer Specifications to test a System-on-Chip
 
 - title: Teaching Assistant
   company: CS 6601, Georgia Tech
   period: Fall 2016
-  description: <ul><li>TA for graduate course on Artificial Intelligence</li></ul>
+  description: |-
+    - TA for graduate course on Artificial Intelligence
 
 - title: Peer Tutor
   company: CPSC 202/223, Yale
   period: 2012 - 2013
-  description: <ul><li>Peer tutor for undergraduates needing further assistance</li><li>CSPSC 202&#58; Mathematical Tools for Computer Science</li><li>CPSC 223&#58; Data Structures and Programming Techniques</li></ul>
+  description: |-
+    - Peer tutor for undergraduates needing further assistance
+    - CPSC 202: Mathematical Tools for Computer Science
+    - CPSC 223: Data Structures and Programming Techniques

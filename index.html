@@ -12,7 +12,7 @@ layout: resume
             <p class="period">{{ qualification.period }}</p>
         </dt><!--
         --><dd>
-            <p class="description">{{ qualification.description }}</p>
+            <p class="description">{{ qualification.description | markdownify }}</p>
         </dd>
     {% endfor %}
 </dl>
@@ -33,7 +33,7 @@ layout: resume
             <p class="period">{{ job.period }}</p>
         </dt><!--
         --><dd>
-            <p class="description">{{ job.description }}</p>
+            <p class="description">{{ job.description | markdownify }}</p>
         </dd>
     {% endfor %}
 </dl>
