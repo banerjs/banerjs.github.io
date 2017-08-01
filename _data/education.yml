@@ -1,9 +1,14 @@
 - qualification: Ph.D. Robotics
   school: Georgia Institute of Technology
   period: 2015 - current
-  description: Member of the <a href="http://www.rail.gatech.edu/" target="_blank">RAIL Lab</a><br/>Advised by <a href="https://www.cc.gatech.edu/~chernova/" target="_blank">Dr. Sonia Chernova</a><br/>Working on collocated Human-Robot Interaction
+  description:
+    - Member of the [RAIL Lab](http://www.rail.gatech.edu/)
+    - Advised by [Dr. Sonia Chernova](https://www.cc.gatech.edu/~chernova/)
+    - Working on collocated Human-Robot Interaction
 
 - qualification: B.S. Electrical Engineering/Computer Science
   school: Yale University
   period: 2009 - 2013
-  description: Graduated with Distinction in Major<br/>Member of Timothy Dwight College
+  description:
+    - Graduated with Distinction in Major
+    - Member of Timothy Dwight College

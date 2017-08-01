@@ -8,8 +8,8 @@ env:
   - COMMIT_AUTHOR_EMAIL: banerjs@banerjs.com
 
 branches:
-  except:
-  - master
+  only:
+  - devel
 
 before_install:
   - sudo apt-get update -qq

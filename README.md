@@ -1,6 +1,10 @@
 # Personal Website
 
-This website runs on Jekyll and uses the [jekyll-resume](https://github.com/mattcouchman/jekyll-resume) theme on the homepage.
+## Reference packages
+
+- [jekyll-resume](https://github.com/mattcouchman/jekyll-resume)
+- [resume](https://github.com/mhyee/resume)
+- [jekyll-scholar](https://github.com/inukshuk/jekyll-scholar)
 
 ## Running locally
 
