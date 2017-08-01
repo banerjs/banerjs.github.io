@@ -1,5 +1,7 @@
 # Personal Website
 
+[![Build Status](https://travis-ci.org/banerjs/banerjs.github.io.svg?branch=devel)](https://travis-ci.org/banerjs/banerjs.github.io)
+
 ## Reference packages
 
 - [jekyll-resume](https://github.com/mattcouchman/jekyll-resume)
