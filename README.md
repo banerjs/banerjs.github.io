@@ -7,6 +7,9 @@
 - [jekyll-resume](https://github.com/mattcouchman/jekyll-resume)
 - [resume](https://github.com/mhyee/resume)
 - [jekyll-scholar](https://github.com/inukshuk/jekyll-scholar)
+- [Deedy-Resume](https://github.com/deedy/Deedy-Resume)
+- [ShareLaTeX Professional CV](https://www.sharelatex.com/templates/cv-or-resume/professional-cv)
+- [ShareLaTeX Academic CV](https://www.sharelatex.com/templates/cv-or-resume/academic-cv)
 
 ## Running locally
 
