@@ -1,160 +1,220 @@
-%------------------------------------
-% Dario Taraborelli
-% Typesetting your academic CV in LaTeX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Deedy - One Page Two Column Resume
+% LaTeX Template
+% Version 1.2 (16/9/2014)
 %
-% URL: http://nitens.org/taraborelli/cvtex
-% DISCLAIMER: This template is provided for free and without any guarantee
-% that it will correctly compile on your system if you have a non-standard
-% configuration.
-% Some rights reserved: http://creativecommons.org/licenses/by-sa/3.0/
-%------------------------------------
+% Original author:
+% Debarghya Das (http://debarghyadas.com)
+%
+% Original repository:
+% https://github.com/deedydas/Deedy-Resume
+%
+% IMPORTANT: THIS TEMPLATE NEEDS TO BE COMPILED WITH XeLaTeX
+%
+% This template uses several fonts not included with Windows/Linux by
+% default. If you get compilation errors saying a font is missing, find the line
+% on which the font is used and either change it to a font included with your
+% operating system or comment the line out to use the default font.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%!TEX TS-program = xelatex
-%!TEX encoding = UTF-8 Unicode
+\documentclass[]{_deedy-resume}
+\usepackage{fancyhdr}
 
-\documentclass[10pt, a4paper]{article}
-\usepackage{fontspec}
+\pagestyle{fancy}
+\fancyhf{}
 
-% DOCUMENT LAYOUT
-\usepackage{geometry}
-\geometry{a4paper, textwidth=5.5in, textheight=8.5in, marginparsep=7pt, marginparwidth=.6in}
-\setlength\parindent{0in}
-
-% FONTS
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage{xunicode}
-\usepackage{xltxtra}
-\defaultfontfeatures{Mapping=tex-text}
-%\setromanfont [Ligatures={Common}, Numbers={OldStyle}, Variant=01]{Linux Libertine O}
-%\setmonofont[Scale=0.8]{Monaco}
-%%% modified by Karol Kozioł for ShareLaTeX use
-\setmainfont[Path=../fonts/,
-  Ligatures={Common}, Numbers={OldStyle}, Variant=01,
-  BoldFont=LinLibertine_RB.otf,
-  ItalicFont=LinLibertine_RI.otf,
-  BoldItalicFont=LinLibertine_RBI.otf
-]{LinLibertine_R.otf}
-\setmonofont[Path=../fonts/,Scale=0.8]{DejaVuSansMono.ttf}
-
-% ---- CUSTOM COMMANDS
-\chardef\&="E050
-\newcommand{\html}[1]{\href{#1}{\scriptsize\textsc{[html]}}}
-\newcommand{\pdf}[1]{\href{#1}{\scriptsize\textsc{[pdf]}}}
-\newcommand{\doi}[1]{\href{#1}{\scriptsize\textsc{[doi]}}}
-% ---- MARGIN YEARS
-\usepackage{marginnote}
-\newcommand{\amper{}}{\chardef\amper="E0BD }
-\newcommand{\years}[1]{\marginnote{\scriptsize #1}}
-\renewcommand*{\raggedleftmarginnote}{}
-\setlength{\marginparsep}{7pt}
-\reversemarginpar
-
-% HEADINGS
-\usepackage{sectsty}
-\usepackage[normalem]{ulem}
-\sectionfont{\mdseries\upshape\Large}
-\subsectionfont{\mdseries\scshape\normalsize}
-\subsubsectionfont{\mdseries\upshape\large}
-
-% PDF SETUP
-% ---- FILL IN HERE THE DOC TITLE AND AUTHOR
-\usepackage[%dvipdfm,
-bookmarks, colorlinks, breaklinks,
-% ---- FILL IN HERE THE TITLE AND AUTHOR
-	pdftitle={Albert Einstein - vita},
-	pdfauthor={My name},
-	pdfproducer={http://nitens.org/taraborelli/cvtex}
-]{hyperref}
-\hypersetup{linkcolor=blue,citecolor=blue,filecolor=black,urlcolor=MidnightBlue}
-
-% DOCUMENT
 \begin{document}
-{\LARGE Albert Einstein}\\[1cm]
- Institute for Advanced Study\\
-Einstein Drive\\
-Princeton, N.J. \texttt{08540}
-U.S.A.\\[.2cm]
-Phone: \texttt{609-734-8000}\\
-Fax: \texttt{609-924-8399}\\[.2cm]
-email: \href{mailto:a.einstein@ias.edu}{a.einstein@ias.edu}\\
-\textsc{url}: \href{http://www.ias.edu/spfeatures/einstein/}{http://www.ias.edu/spfeatures/einstein/}\\
-\vfill
- Born:  March 12, 1879---Ulm, Germany\\
-Nationality:  German/American
 
-%%\hrule
-\section*{Current position}
-\emph{Emeritus Professor}, Institute for Advanced Study, Princeton
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     LAST UPDATED DATE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lastupdated
 
-%%\hrule
-\section*{Areas of specialization}
- Physics • Relativity theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     TITLE NAME
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\namesection{Siddhartha}{Banerjee}{ \urlstyle{same}\href{http://banerjs.com}{banerjs.com} | \href{mailto:siddhartha.banerjee@gatech.edu}{siddhartha.banerjee@gatech.edu} | +1.203.435.1923
+}
 
-%%\hrule
-\section*{Appointments held}
-\noindent
-\years{1903-1908}Swiss Patent Office, Bern\\
-\years{1908-1911}University of Bern\\
-\years{1911-1912}University of Zürich\\
-\years{1912-1914}Charles University of Prague\\
-\years{1914-1932}Prussian Academy of Sciences, Berlin\\
-\years{1920-1930}University of Leiden\\
-\years{1932-1955}Institute for Advanced Study, Princeton
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     COLUMN ONE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\hrule
-\section*{Education}
-\noindent
-\years{1900}\textsc{MSc} in Physics, ETH Zürich\\
-\years{1900}\textsc{PhD} in Physics, ETH Zürich
+\begin{minipage}[t]{0.33\textwidth}
 
-%\hrule
-\section*{Grants, honors \& awards}
-\noindent
-\years{1921}Nobel Prize in Physics, Nobel Foundation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     EDUCATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Publications \& talks}
+\section{Education}
 
-\subsection*{Journal articles}
-\noindent
-\years{1901}Einstein, Albert (1901), “Folgerungen aus den Capillaritätserscheinungen (Conclusions Drawn from the Phenomena of Capillarity)", \emph{Annalen der Physik} 4: 513\\
-\years{1905a}Einstein, Albert (1905), “On a Heuristic Viewpoint Concerning the Production and Transformation of Light", \emph{Annalen der Physik} 17: 132–148.\\
-\years{1905b}Einstein, Albert (1905), A new determination of molecular dimensions. \emph{PhD dissertation}.\\
-\years{1905c}Einstein, Albert (1905), “On the Motion—Required by the Molecular Kinetic Theory of Heat—of Small Particles Suspended in a Stationary Liquid", \emph{Annalen der Physik} 17: 549–560.
-\years{1905d}Einstein, Albert (1905), “On the Electrodynamics of Moving Bodies", \emph{Annalen der Physik} 17: 891–921.\\
-\years{1905e}Einstein, Albert (1905), “Does the Inertia of a Body Depend Upon Its Energy Content?", \emph{Annalen der Physik} 18: 639–641.\\
-\years{1915}Einstein, Albert (1915), “Die Feldgleichungen der Gravitation (The Field Equations of Gravitation)", \emph{Koniglich Preussische Akademie der Wissenschaften}: 844–847\\
-\years{1917a}Einstein, Albert (1917), “Kosmologische Betrachtungen zur allgemeinen Relativitätstheorie (Cosmological Considerations in the General Theory of Relativity)", \emph{Koniglich Preussische Akademie der Wissenschaften}\\
-\years{1917b}Einstein, Albert (1917), “Zur Quantentheorie der Strahlung (On the Quantum Mechanics of Radiation)", \emph{Physikalische Zeitschrift} 18: 121–128
+\subsection{Georgia Tech}
+\descript{Ph.D. in Robotics}
+\location{In Progress | Atlanta, GA}
+Advised by Dr. Sonia Chernova
+\sectionsep
 
-\subsection*{Books}
-\noindent
-\years{1954}Einstein, Albert (1954), \emph{Ideas and Opinions}, New York: Random House, ISBN 0-517-00393-7
+\subsection{Yale University}
+\descript{BS in Electrical Engineering/Computer Science}
+\location{May 2013 | New Haven, CT}
+Distinction in Major \\
+GPA: 3.7 / 4.0
+\sectionsep
 
-\subsection*{Newspaper articles}
-\noindent
-\years{1940}Einstein, Albert, et al. (December 4, 1948), “To the editors", \emph{New York Times}\\
-\years{1949}Einstein, Albert (May 1949), “Why Socialism?", \emph{Monthly Review}.
+\subsection{Vasant Valley School}
+\location{Grad. 2009 | New Delhi, India}
 
-\section*{Teaching}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     LINKS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-...
+\section{Links}
+Github:// \href{https://github.com/banerjs}{\bf banerjs} \\
+LinkedIn://  \href{https://www.linkedin.com/in/banerjs}{\bf banerjs} \\
+ResearchGate://  \href{https://www.researchgate.net/profile/Siddhartha\_Banerjee5}{\bf Siddhartha\_Banerjee5} \\
+Goodreads:// \href{https://www.goodreads.com/user/show/41408373-siddhartha-banerjee}{\bf siddhartha-banerjee}
 
-%\hrule
-\section*{Service to the profession}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     COURSEWORK
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-...
-%\vspace{1cm}
-\vfill{}
-%\hrulefill
+\section{Coursework}
+\subsection{Graduate}
+% Advanced Machine Learning \\
+% Open Source Software Engineering \\
+% Advanced Interactive Graphics \\
+% Compilers + Practicum \\
+% Cloud Computing \\
+% Evolutionary Computation \\
+% Defending Computer Networks \\
+% Machine Learning \\
+\sectionsep
 
-\begin{center}
-{\scriptsize  Last updated: \today\- •\-
-% ---- PLEASE LEAVE THIS BACKLINK FOR ATTRIBUTION AS PER CC-LICENSE
-Typeset in \href{http://nitens.org/taraborelli/cvtex}{
-%\fontspec{Times New Roman}
-\XeTeX }\\
-% ---- FILL IN THE FULL URL TO YOUR CV HERE
-\href{http://nitens.org/taraborelli/cvtex}{http://nitens.org/taraborelli/cvtex}}
-\end{center}
+\subsection{Undergraduate}
+% Information Retrieval \\
+% Operating Systems \\
+% Artificial Intelligence + Practicum \\
+% Functional Programming \\
+% Computer Graphics + Practicum \\
+% {\footnotesize \textit{\textbf{(Research Asst. \& Teaching Asst 2x) }}} \\
+% Unix Tools and Scripting \\
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Programming
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Programming}
+\subsection{Languages}
+\location{Familiar:}
+Python \textbullet{} C++ \textbullet{} C \textbullet{} Java \textbullet{} C\# \\
+MATLAB \textbullet{} Shell \textbullet{} Javascript \\
+CSS \textbullet{} SQL \textbullet{} \LaTeX \\
+\location{Aware:}
+PHP \textbullet{} Scheme \textbullet{} Assembly \\
+\sectionsep
+
+\subsection{Frameworks}
+ROS \textbullet{} Django \textbullet{} React \textbullet{} Rails \\
+PyTorch \textbullet{} Hibernate \textbullet{} Spring
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     COLUMN TWO
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.66\textwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     WORK EXPERIENCE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Work Experience}
+% \runsubsection{Facebook}
+% \descript{| Software Engineer }
+% \location{Jan 2015 - Present | New York, NY}
+% \sectionsep
+
+% \runsubsection{Coursera}
+% \descript{| KPCB Fellow + Software Engineering Intern }
+% \location{June 2014 – Sep 2014 | Mountain View, CA}
+% \vspace{\topsep} % Hacky fix for awkward extra vertical space
+% \begin{tightemize}
+% \item 52 out of 2500 applicants chosen to be a KPCB Fellow 2014.
+% \item Led and shipped Yoda - the admin interface for the new Phoenix platform.
+% \item Full-stack developer - Wrote and reviewed code for JS using Backbone, Jade, Stylus and Require and Scala using Play
+% \end{tightemize}
+% \sectionsep
+
+% \runsubsection{Google}
+% \descript{| Software Engineering Intern }
+% \location{May 2013 – Aug 2013 | Mountain View, CA}
+% \begin{tightemize}
+% \item Worked on the YouTube Captions team, in Javascript and Python to plan, to design and develop the full stack to add and edit Automatic Speech Recognition captions. In production.
+% \item Created a backbone.js-like framework for the Captions editor.
+% \end{tightemize}
+% \sectionsep
+
+% \runsubsection{Phabricator}
+% \descript{| Open Source Contributor \& Team Leader}
+% \location{Jan 2013 – May 2013 | Palo Alto, CA \& Ithaca, NY}
+% \begin{tightemize}
+% \item Phabricator is used daily by Facebook, Dropbox, Quora, Asana and more.
+% \item I created the Meme generator and more in PHP and Shell.
+% \item Led a team from MIT, Cornell, IC London and UHelsinki for the project.
+% \end{tightemize}
+\sectionsep
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     SELECT PROJECTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Select Projects}
+% \runsubsection{Cornell Robot Learning Lab}
+% \descript{| Researcher}
+% \location{Jan 2014 – Jan 2015 | Ithaca, NY}
+% Worked with \textbf{\href{http://www.cs.cornell.edu/~ashesh/}{Ashesh Jain}} and \textbf{\href{http://www.cs.cornell.edu/~asaxena/}{Prof Ashutosh Saxena}} to create \textbf{PlanIt}, a tool which  learns from large scale user preference feedback to plan robot trajectories in human environments.
+% \sectionsep
+
+% \runsubsection{Cornell Phonetics Lab}
+% \descript{| Head Undergraduate Researcher}
+% \location{Mar 2012 – May 2013 | Ithaca, NY}
+% Led the development of \textbf{QuickTongue}, the first ever breakthrough tongue-controlled game with \textbf{\href{http://conf.ling.cornell.edu/~tilsen/}{Prof Sam Tilsen}} to aid in Linguistics research.
+\sectionsep
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     AWARDS & Leadership
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Awards \& Leadership}
+\begin{tabular}{rll}
+% 2014	     & top 52/2500  & KPCB Engineering Fellow\\
+% 2014	     & 1\textsuperscript{st}/50  & Microsoft Coding Competition, Cornell\\
+% 2013	     & National  & Jump Trading Challenge Finalist\\
+% 2013     & 7\textsuperscript{th}/120 & CS 3410 Cache Race Bot Tournament  \\
+% 2012     & 2\textsuperscript{nd}/150 & CS 3110 Biannual Intra-Class Bot Tournament \\
+% 2011     & National & Indian National Mathematics Olympiad (INMO) Finalist \\
+\end{tabular}
+\sectionsep
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     NOTABLE PUBLICATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Notable Publications}
+\renewcommand\refname{\vskip -0.7cm} % Couldn't get this working from the .cls file
+\bibliographystyle{IEEEtran}
+\bibliography{../_bibliography/resume}
+\nocite{*}
+
+\end{minipage}
 \end{document}
