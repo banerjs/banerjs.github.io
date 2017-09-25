@@ -1,0 +1,195 @@
+% LaTeX Curriculum Vitae Template
+%
+% Copyright (C) 2004-2009 Jason Blevins <jrblevin@sdf.lonestar.org>
+% http://jblevins.org/projects/cv-template/
+%
+% You may use use this document as a template to create your own CV
+% and you may redistribute the source code freely. No attribution is
+% required in any resulting documents. I do ask that you please leave
+% this notice and the above URL in the source code if you choose to
+% redistribute this file.
+
+\documentclass[letterpaper]{article}
+
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry}
+
+% Comment the following lines to use the default Computer Modern font
+% instead of the Palatino font provided by the mathpazo package.
+% Remove the 'osf' bit if you don't like the old style figures.
+\usepackage[T1]{fontenc}
+\usepackage[sc,osf]{mathpazo}
+
+% Set your name here
+\def\name{Siddhartha Banerjee}
+
+% Replace this with a link to your CV if you like, or set it empty
+% (as in \def\footerlink{}) to remove the link in the footer:
+\def\footerlink{}
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {robotics, human-robot interaction, artificial intelligence},
+  pdftitle = {\name: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+\geometry{
+  body={6.5in, 8.5in},
+  left=1.0in,
+  top=1.25in
+}
+
+% Customize page headers
+\pagestyle{myheadings}
+\markright{\name}
+\thispagestyle{empty}
+
+% Custom section fonts
+\usepackage{sectsty}
+\sectionfont{\rmfamily\mdseries\Large}
+\subsectionfont{\rmfamily\mdseries\itshape\large}
+
+% Other possible font commands include:
+% \ttfamily for teletype,
+% \sffamily for sans serif,
+% \bfseries for bold,
+% \scshape for small caps,
+% \normalsize, \large, \Large, \LARGE sizes.
+
+% Don't indent paragraphs.
+\setlength\parindent{0em}
+
+% Make lists without bullets
+\renewenvironment{itemize}{
+  \begin{list}{}{
+    \setlength{\leftmargin}{1.5em}
+  }
+}{
+  \end{list}
+}
+
+\begin{document}
+
+% Place name at left
+{\huge \name}
+
+% Alternatively, print name centered and bold:
+%\centerline{\huge \bf \name}
+
+\vspace{0.25in}
+
+\begin{minipage}{0.45\linewidth}
+  \href{}{Georgia Institute of Technology} \\
+  RAIL Lab, College of Computing \\
+  800 Atlantic Dr NW \\
+  Atlanta, GA 30332
+\end{minipage}
+\begin{minipage}{0.45\linewidth}
+  \begin{tabular}{ll}
+    Phone: & +1 (203) 435-1923 \\
+    Email: & \href{mailto:siddhartha.banerjee@gatech.edu}{\tt siddhartha.banerjee@gatech.edu} \\
+    Homepage: & \href{http://www.banerjs.com/}{\tt http://www.banerjs.com/} \\
+  \end{tabular}
+\end{minipage}
+
+\section*{Education}
+
+\begin{description}[leftmargin=7.5em, style=nextline]
+  \item[2015 --- ] Ph.D. in Robotics. Advised by Dr. Sonia Chernova. \textit{In Progress}. \\ \textit{Georgia Institute of Technology, Atlanta, GA, USA}.
+
+  \item[2009 --- 2013] B.S. Electrical Engineering/Computer Science with Distinction. \\ \textit{Yale University, New Haven, CT, USA}.
+\end{description}
+
+\section*{Employment}
+
+\begin{description}[leftmargin=7.5em, style=nextline]
+  \item[Summer 2017] Research Intern. Advised by Dan Bohus and Sean Andrist. \\ \textit{Microsoft, Seattle, WA, USA}
+
+  \item[Fall 2016] Teaching Assistant for CS6601: Introduction to Artificial Intelligence. \\ \textit{Georgia Institute of Technology, Atlanta, GA, USA}
+
+  \item[2013 --- 2015] Software Engineer on Data Team. \\ \textit{Redfin, Seattle, WA, USA}
+
+  \item[2012 --- 2013] Peer Tutor for CPSC 202: Mathematical Tools for Computer Science. \\ \textit{Yale University, New Haven, CT, USA}
+
+  \item[Summer 2012] Hardware Verification Intern. \\ \textit{Microsoft, Mountain View, CA, USA}
+\end{description}
+
+
+\section*{Publications}
+
+\subsection*{Conference Proceedings}
+
+\begin{itemize}
+  \item \textbf{S. Banerjee} and S. Chernova, ``Temporal Models for Robot Classification of Human Interruptibility,'' in \textit{Int. Conf. on Autonomous Agents \& Multiagent Systems}, no. 16. IFAAMAS, 2017, pp. 1350--1359
+\end{itemize}
+
+\subsection*{Workshops}
+
+\begin{itemize}
+  \item \textbf{S. Banerjee} and S. Chernova, ``Robots Predicting the Interruptibility of Humans,'' in \textit{RSS Workshop on Planning for HRI}, 2016
+
+  \item B. Harrison, \textbf{S. Banerjee}, and M. O. Riedl, ``Learning from Stories: Using Natural Communication to Train Believable Agents,'' in \textit{IJCAI Workshop on Interactive Machine Learning}, 2016
+\end{itemize}
+
+\section*{Awards and Leadership Positions}
+
+\begin{description}[leftmargin=7.5em, style=nextline]
+\itemsep0em
+  \item[2017 --- 2018] President, RoboGrads, \textit{Georgia Institute of Technology}
+
+  \item[2016 --- 2017] Social Chair, RoboGrads, \textit{Georgia Institute of Technology}
+
+  \item[Q3 2014] Employee of the Quarter, \textit{Redfin}
+
+  \item[2012 --- 2013] Team Mentor, Formula Hybrid FSAE Team, \textit{Yale University}
+
+  \item[2011 --- 2012] Vice President, Formula Hybrid FSAE Team, \textit{Yale University}
+
+  \item[Summer 2011] Yale Entrepreneurial Institute Fellowship, \textit{Yale University}
+\end{description}
+
+\section*{Projects}
+
+\begin{description}[leftmargin=7.5em, style=nextline]
+  \item[Spring 2016] \textbf{Quadrotor Control via Backstepping}. \textit{Class Project} \\
+  Verified and simulated the control of a quadrotor through Backstepping to show provably correct control that uses less energy than traditional Inner-loop Outer-loop control.
+
+  \item[Spring 2016] \textbf{Treeminder: An SMS-based Goal Completion System for the United Way Achievement Club}. \textit{Class Project} \\
+  Designed a goal tracking and completion system in partnership with the United Way Achievement Club to help members of at-risk populations avoid homelessness. Conducted usability and feasibility analyses to justify and support the design.
+
+  \item[2009 --- 2013] \textbf{Yale Formula Hybrid FSAE Team}. \textit{Student Organization} \\
+  Designed and built formula style gas-electric hybrid car to compete against other schools in an annual national competition. Team awards: Best Hybrid Car (2013), Ford Efficiency Award (2013), Chrysler Innovation Award (2013), GM Best Engineered Hybrid System Award (2010, 2013)
+
+  \item[2012 --- 2013] \textbf{Synchronization and Collective Behaviour}. \textit{Senior Class Project} \\
+  Simulated agent-based modeling of multi-agent systems. Explored the role of synchronization and chaos in dynamical systems.
+
+  \item[Spring 2012] \textbf{Assigning Blame to Self-Driving Cars}. \textit{Class Project} \\
+  Surveyed drivers to determine whether blame is assigned to a self-driving car or the human driver using simulations of accidents between self-driving cars with human-driven cars.
+
+  \item[Fall 2011] \textbf{Design and Fabrication of Simple Data Encryption Standard (S-DES) Encryption/Decryption chip}. \textit{Class Project} \\
+  Designed a VLSI chip to perform S-DES encryption/decryption and created CAD models of the chip and its layout in preparation for fabrication. Tested and verified the function of the chip post-fabrication.
+\end{description}
+
+\section*{Professional Memberships}
+
+\begin{itemize}
+  \item Institute for Electrical and Electronics Engineers (IEEE)
+\end{itemize}
+
+\bigskip
+
+% Footer
+\begin{center}
+  \begin{footnotesize}
+    Last updated: \today \\
+    \href{\footerlink}{\texttt{\footerlink}}
+  \end{footnotesize}
+\end{center}
+
+\end{document}
