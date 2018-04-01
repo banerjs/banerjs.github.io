@@ -11,9 +11,14 @@ branches:
   only:
   - devel
 
+cache:
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
+
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq rsync
+  - sudo apt-get install -qq -y rsync wget texlive-full
 
 install:
   - bundle install

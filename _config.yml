@@ -41,6 +41,8 @@ exclude:
   - blog.sublime-workspace
   - README.md
   - scripts/
+  - pdf/*.tex
+  - pdf/*.cls
 
 # Permalink styles
 permalink: /:categories/:year/:month/:title/
