@@ -1,28 +1,27 @@
-language: ruby
-rvm:
-  - 2.4
-
 env:
   global:
   - ENCRYPTION_LABEL: afb3f4a0fd37
   - COMMIT_AUTHOR_EMAIL: banerjs@banerjs.com
 
+sudo: required
+
+services:
+  - docker
+
+git:
+  depth: 10
+
 branches:
   only:
   - devel
 
-cache:
-  directories:
-    - /tmp/texlive
-    - $HOME/.texlive
-
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq -y rsync wget texlive-full
+  - docker pull banerjs/banerjs.github.io:builder
 
 install:
+  - docker run --rm -v $(pwd):/usr/src banerjs/banerjs.github.io:builder scripts/build_latex.sh
   - bundle install
+  - bundle exec jekyll build
 
 script:
-  - bundle exec jekyll build
   - bash scripts/deploy.sh
