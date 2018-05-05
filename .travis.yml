@@ -24,4 +24,4 @@ install:
   - bundle exec jekyll build
 
 script:
-  - scripts/deploy.sh
+  - bash scripts/deploy.sh
