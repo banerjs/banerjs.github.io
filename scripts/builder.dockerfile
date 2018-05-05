@@ -17,6 +17,7 @@ RUN apt-get update -qq && \
     apt-get install -yq --no-install-recommends \
         rvm \
         texlive-full
+RUN rvm install 2.4 && --default use 2.4
 
 # Set the env variables, workdir, etc.
 ENV INSTALL_DIR="/usr/src"

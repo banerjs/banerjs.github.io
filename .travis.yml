@@ -19,9 +19,9 @@ before_install:
   - docker pull banerjs/banerjs.github.io:builder
 
 install:
-  - docker run --rm -v $(pwd):/usr/src banerjs/banerjs.github.io:builder scripts/build_latex.sh
+  - docker run --rm -v $(pwd):/usr/src banerjs/banerjs.github.io:builder bash scripts/build_latex.sh
   - bundle install
   - bundle exec jekyll build
 
 script:
-  - bash scripts/deploy.sh
+  - scripts/deploy.sh
