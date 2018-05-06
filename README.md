@@ -24,4 +24,8 @@ There are three parallel branches in this repo:
 ## TODO
 
 - Create YAML files for the different sections of the resume, and fill them out
-- Create PDF from YAML files - add links to download the PDF
+- Create PDF from YAML files
+- Add links to download the PDF
+- Figure out a better glob setting for the pdf files in `_config.yml`
+- Figure out why the `pdf` collection is empty but the `documents` collection is not.
+- Get the links to the pdf documents

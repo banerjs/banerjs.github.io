@@ -30,7 +30,7 @@ researchgate_url: "https://www.researchgate.net/profile/Siddhartha_Banerjee5"
 scholar_url: "https://scholar.google.com/citations?user=OoqdqrYAAAAJ&hl=en"
 goodreads_url: "https://www.goodreads.com/user/show/41408373-siddhartha-banerjee"
 
-# Build settings
+# Build settings.
 repository: "banerjs/banerjs.github.io"
 github: [metadata]
 markdown: kramdown
@@ -41,8 +41,13 @@ exclude:
   - blog.sublime-workspace
   - README.md
   - scripts/
-  - pdf/*.tex
-  - pdf/*.cls
+  - _pdf/*.tex
+  - _pdf/*.cls
+  - _pdf/*.aux
+  - _pdf/*.bbl
+  - _pdf/*.log
+  - _pdf/*.out
+  - _pdf/*.blg
 
 # Permalink styles
 permalink: /:categories/:year/:month/:title/
@@ -57,3 +62,15 @@ scholar:
     - smallcaps
     - superscript
   bibliography_template: bib
+
+# Collections of pdfs
+collections:
+  pdf:
+    output: true
+    permalink: /:collection/:name
+
+# defaults:
+#   - scope:
+#       path: "pdf/cv.pdf"
+#     values:
+#       display_name: "Curriculum Vitae.pdf"

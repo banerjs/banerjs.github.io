@@ -3,7 +3,7 @@
 set -ev
 
 # Navigate to the pdf's directory
-cd pdf/
+cd _pdf/
 
 # For each `.tex` file, build it
 # Nice to haves:
