@@ -1,3 +1,10 @@
+- title: Robotics Software Engineering Intern
+  company: Diligent Robotics
+  period: Summer 2018
+  description: |-
+    - Helped develop software modules for the Moxi robot
+    - Experienced the process of launching a robotics startup and porting research code to a product
+
 - title: Research Intern
   company: Microsoft
   period: Summer 2017
@@ -21,6 +28,12 @@
   description: |-
     - VLSI hardware verification and testing for the Xbox One
     - Used waveform analysis and Kernel Developer Specifications to test a System-on-Chip
+
+- title: Teaching Assistant
+  company: CS 7633, Georgia Tech
+  period: Fall 2018
+  description: |-
+    - TA for graduate course on Human-Robot Interaction
 
 - title: Teaching Assistant
   company: CS 6601, Georgia Tech
