@@ -55,6 +55,8 @@ permalink: /:categories/:year/:month/:title/
 # Citations
 scholar:
   style: ieee
+  # group_by: type
+  # group_order: [article, inproceedings, misc]
   sort_by: year
   order: descending
   bibtex_filters:

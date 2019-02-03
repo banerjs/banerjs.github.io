@@ -20,7 +20,14 @@ layout: resume
 
 <section>
 <h3 class="section-title">Publications</h3>
-{% bibliography --file cv %}
+    <p class="title">Journal Articles</p>
+    {% bibliography --file cv -q @article %}
+
+    <p class="title">Conference Proceedings</p>
+    {% bibliography --file cv -q @inproceedings %}
+
+    <p class="title">Workshops</p>
+    {% bibliography --file cv -q @misc %}
 </section>
 
 <section>
