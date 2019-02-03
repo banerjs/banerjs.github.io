@@ -2,5 +2,8 @@
 ---
 {{ reference }}
 {% if entry.url %}
-<span><a href="{{ entry.url }}" target="_blank">link</a></span>
+{% assign urls = (entry.url | split: " ") %}
+{% for url in urls %}
+<span><a href="{{ url }}" target="_blank">{% if url contains 'banerjs_' %}download{% else %}link{% endif %}</a></span>
+{% endfor %}
 {% endif %}
