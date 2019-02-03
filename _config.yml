@@ -67,7 +67,6 @@ scholar:
 collections:
   pdf:
     output: true
-    permalink: /:collection/:name
 
 # defaults:
 #   - scope:

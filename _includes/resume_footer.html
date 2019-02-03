@@ -3,7 +3,7 @@
     {% assign pdfs = (site.collections | where: "label", "pdf" | first %}
     {% assign sorted = (pdfs.files | sort: 'name') %}
     {% for doc in sorted %}
-    <a href="{{ doc.url }}">{{ doc.basename | upcase }}{{ doc.extname | downcase }}</a>
+    <a href="{{ doc.path | replace_first: '_pdf', 'pdf' }}">{{ doc.basename | upcase }}{{ doc.extname | downcase }}</a>
     {% if forloop.last %}{% else %}<span>&emsp;&emsp;&emsp;</span>{% endif%}
     {% endfor %}
     </p>
