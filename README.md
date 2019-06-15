@@ -16,6 +16,7 @@ There are three parallel branches in this repo:
 - [resume](https://github.com/mhyee/resume)
 - [jekyll-scholar](https://github.com/inukshuk/jekyll-scholar)
 - [Deedy-Resume](https://github.com/deedy/Deedy-Resume)
+- [hyde](https://github.com/poole/hyde)
 
 ## Running locally
 
