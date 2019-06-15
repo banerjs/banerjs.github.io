@@ -34,6 +34,7 @@ goodreads_url: "https://www.goodreads.com/user/show/41408373-siddhartha-banerjee
 repository: "banerjs/banerjs.github.io"
 github: [metadata]
 markdown: kramdown
+highlighter: pygments
 exclude:
   - Gemfile
   - Gemfile.lock
