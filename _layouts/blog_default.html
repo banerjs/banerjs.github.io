@@ -2,7 +2,9 @@
 <html>
     {% include blog_head.html %}
     <body>
-        <div class="container">
+        {% include blog_sidebar.html %}
+
+        <div class="content container">
             {{ content }}
         </div>
     </body>
