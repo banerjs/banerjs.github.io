@@ -1,0 +1,19 @@
+// @name Blog
+// @description All blog styles
+
+// Import the fonts
+@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface);
+
+// Sidebar credits
+.sidebar {
+    .footer__credits {
+        font-size: 0.7rem;
+    }
+}
+
+// Posts
+.post {
+    small {
+        font-size: 0.9rem;
+    }
+}
