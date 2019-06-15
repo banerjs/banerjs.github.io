@@ -10,13 +10,15 @@ There are three parallel branches in this repo:
 - `master`: The branch is automatically deployed to the website by Github. The files in this branch are updated by Travis after successful builds on `devel`. Try not to develop and/or modify this branch manually.
 - `docker`: Contains the `Dockerfile` folders that have the details of images relevant to this project. The images are updated automatically through Docker Hub when this branch is pushed.
 
-## Reference packages
+## Helpful Reference
 
 - [jekyll-resume](https://github.com/mattcouchman/jekyll-resume)
 - [resume](https://github.com/mhyee/resume)
 - [jekyll-scholar](https://github.com/inukshuk/jekyll-scholar)
 - [Deedy-Resume](https://github.com/deedy/Deedy-Resume)
 - [hyde](https://github.com/poole/hyde)
+- [MathJax](http://sgeos.github.io/github/jekyll/2016/08/21/adding_mathjax_to_a_jekyll_github_pages_blog.html)
+- [Kramdown Quick Reference](https://kramdown.gettalong.org/quickref.html)
 
 ## Running locally
 
