@@ -50,7 +50,7 @@ exclude:
   - _pdf/*.blg
 
 # Permalink styles
-permalink: /:categories/:year/:month/:title/
+permalink: /:categories/:year/:month/:day/:title/
 
 # Citations
 scholar:
