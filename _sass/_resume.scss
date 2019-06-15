@@ -79,3 +79,23 @@ ol {
         display: none;
     }
 }
+
+.other {
+    ul {
+        list-style: none;
+        text-align: center;
+        margin-bottom: $spacer;
+
+        li {
+            display: inline;
+            margin-right: $spacer;
+        }
+    }
+
+    a {
+        background: white;
+        &:hover {
+            background: white;
+        }
+    }
+}
