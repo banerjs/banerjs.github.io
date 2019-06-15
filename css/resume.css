@@ -55,7 +55,10 @@ ol li { display: inline-block; vertical-align: top; margin-bottom: 20px; }
   .education dt, .education dd { width: 50%; } }
 .title { margin: 0; font-weight: bold; font-size: 1.2rem; }
 
-a { color: black !important; background: rgba(245, 215, 110, 0.5); transition: all linear .2s; }
-a:hover { background: #f5d76e; text-decoration: none; }
+.bibtex > .link, a { color: black !important; background: rgba(245, 215, 110, 0.5); transition: all linear .2s; }
+.bibtex > .link:hover, a:hover { background: #f5d76e; text-decoration: none; }
 
 .description a { background: white; }
+
+.bibtex .link { text-decoration: underline; }
+.bibtex pre { font-family: monospace, monospace; overflow: auto; padding: 1rem; word-wrap: normal; white-space: pre; background-color: #eee; border: 1px solid #999; font-size: 0.7rem; display: none; }
