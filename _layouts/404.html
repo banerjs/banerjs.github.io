@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>404: Page not found</title>
+
+        <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: site.url  }}">
+        <link rel="stylesheet" href="{{ "/css/404.css" | prepend: site.url }}">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{{ "/js/404.js" | prepend: site.url }}"></script>
+    </head>
+    <body>
+        {% include blog_sidebar.html %}
+
+        <div class="content container-404">
+            {{ content }}
+        </div>
+    </body>
+</html>
