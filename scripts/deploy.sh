@@ -35,6 +35,7 @@ rsync -avm \
 	--include="*.png" \
 	--include="*.ico" \
 	--include="*.pdf" \
+    --include="*.xml" \
 	-f 'hide,! */' \
 	../_site/ ./
 
