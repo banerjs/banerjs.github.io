@@ -9,12 +9,17 @@ MAINTAINER Siddhartha Banerjee, banerjs@banerjs.com
 
 # Install wget, texlive, and rvm
 RUN apt-get update -qq && \
-    apt-get install -yq --no-install-recommends \
-        wget \
-        software-properties-common && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+        apt-transport-https \
+        gnupg \
+        lsb-release \
+        software-properties-common \
+        sudo \
+        tzdata \
+        wget && \
     apt-add-repository -y ppa:rael-gc/rvm && \
     apt-get update -qq && \
-    apt-get install -yq --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
         rvm \
         texlive-full
 
