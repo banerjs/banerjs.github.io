@@ -2,7 +2,7 @@
 # steps. Although we could do things in travis, it's probably better to do them
 # with docker so that there aren't any transient changes that affect the build
 
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 
 # Set Maintainer
 MAINTAINER Siddhartha Banerjee, banerjs@banerjs.com
