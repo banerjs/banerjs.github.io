@@ -62,3 +62,8 @@ ol li { display: inline-block; vertical-align: top; margin-bottom: 20px; }
 
 .bibtex .link { text-decoration: underline; }
 .bibtex pre { font-family: monospace, monospace; overflow: auto; padding: 1rem; word-wrap: normal; white-space: pre; background-color: #eee; border: 1px solid #999; font-size: 0.7rem; display: none; }
+
+.other ul { list-style: none; text-align: center; margin-bottom: 20px; }
+.other ul li { display: inline; margin-right: 20px; }
+.other a { background: white; }
+.other a:hover { background: white; }
