@@ -44,4 +44,4 @@ exclude:
   - scripts/
 
 # Permalink styles
-permalink: /:categories/:year/:month/:day/:title/
+permalink: /:year/:month/:day/:title/
