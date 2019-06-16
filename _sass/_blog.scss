@@ -11,9 +11,42 @@
     }
 }
 
-// Posts
+// Posts. Includes the actual post content itself
 .post {
     small {
         font-size: 0.9rem;
+    }
+
+    sup {
+        vertical-align: super;
+        font-size: 0.7rem;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    ol {
+        list-style-type: decimal;
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    ol, ul, dl {
+        list-style-position: outside;
+
+        li {
+            margin-bottom: 0.4rem
+        }
+    }
+
+    .footnotes {
+        font-size: 0.8rem;
     }
 }
