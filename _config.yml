@@ -71,8 +71,12 @@ collections:
   pdf:
     output: true
 
-# defaults:
-#   - scope:
-#       path: "pdf/cv.pdf"
-#     values:
-#       display_name: "Curriculum Vitae.pdf"
+# Plugins for the sitemap
+plugins:
+  - jekyll-sitemap
+
+defaults:
+  - scope:
+      path: "google*.html"
+    values:
+      sitemap: false
