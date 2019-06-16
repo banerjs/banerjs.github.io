@@ -27,17 +27,17 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Copy the compiled stuff here
 rsync -avm \
-	--include='*.html' \
-	--include='*.md' \
-	--include="*.css" \
-	--include="*.js" \
-	--include="*.jpg" \
-	--include="*.png" \
-	--include="*.ico" \
-	--include="*.pdf" \
+    --include='*.html' \
+    --include='*.md' \
+    --include="*.css" \
+    --include="*.js" \
+    --include="*.jpg" \
+    --include="*.png" \
+    --include="*.ico" \
+    --include="*.pdf" \
     --include="*.xml" \
-	-f 'hide,! */' \
-	../_site/ ./
+    -f 'hide,! */' \
+    ../_site/ ./
 
 # If there are no changes to the compiled out then just bail.
 if git diff --quiet; then
