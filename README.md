@@ -22,7 +22,7 @@ There are three parallel branches in this repo:
 
 ## Running locally
 
-`bundle exec jekyll serve -P 8000`
+`bundle exec jekyll serve -P 8000 --drafts`
 
 ## TODO
 
