@@ -16,12 +16,12 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 
 table { border-collapse: collapse; border-spacing: 0; }
 
-.container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
 
 .section-title { text-transform: uppercase; letter-spacing: 4px; margin-bottom: 40px; text-align: center; position: relative; }
 .section-title:after { content: ''; position: absolute; bottom: -5px; left: 50%; margin-left: -25px; width: 50px; height: 1px; background: #222; }
 
-body { font-family: "Lora", Helvetica, Arial, sans-serif, serif; font-size: 16px; line-height: 1.4; }
+body { font-family: "Lora", Helvetica, Arial, sans-serif, serif; font-size: 1.1em; line-height: 1.4; }
 
 header { border-bottom: 1px solid #edefee; padding: 40px 0; margin-bottom: 40px; }
 @media (min-width: 640px) { header { padding: 200px 0 60px; margin-bottom: 60px; } }
@@ -67,3 +67,9 @@ ol li { display: inline-block; vertical-align: top; margin-bottom: 20px; }
 .other ul li { display: inline; margin-right: 20px; }
 .other a { background: white; }
 .other a:hover { background: white; }
+
+.research-statement { margin-bottom: 40px; }
+.research-statement .section-title { margin-bottom: 20px; }
+.research-statement p { text-align: center; margin-bottom: 20px; }
+.research-statement ul { list-style: none; text-align: center; margin-bottom: 20px; }
+.research-statement ul li { display: inline; margin-right: 20px; }
