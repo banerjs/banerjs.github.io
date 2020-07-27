@@ -6,6 +6,9 @@
 		},
 		{
 			"path": "../purpose_tracker"
+		},
+		{
+			"path": "../turtlesim_dash_tutorial"
 		}
 	]
 }
