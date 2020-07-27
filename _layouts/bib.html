@@ -7,4 +7,4 @@
 <span><a href="{{ url }}" target="_blank">{% if url contains 'banerjs_' %}download{% else %}link{% endif %}</a></span>
 {% endfor %}
 {% endif %}
-<span class="bibtex" id="bibtex-{{ entry.key }}" onclick="clicked_bib(this)"><a href="#{{ entry.key }}">bib</a><pre>{{ entry.bibtex }}</pre></span>
+<span class="bibtex"><a href="#{{ entry.key }}" onclick="clicked_bib('bibtex-{{ entry.key }}')">bib</a><pre id="bibtex-{{ entry.key }}">{{ entry.bibtex }}</pre></span>

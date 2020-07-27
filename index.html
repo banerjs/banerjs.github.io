@@ -18,6 +18,11 @@ layout: resume
 </dl>
 </section>
 
+<section class="research-statement">
+<h3 class="section-title">Research Overview</h3>
+<p>{{ site.data.resume.research_statement | markdownify }}</p>
+</section>
+
 <section>
 <h3 class="section-title">Publications</h3>
     <p class="title">Journal Articles</p>
@@ -29,6 +34,11 @@ layout: resume
     <p class="title">Workshops / Symposia / Other</p>
     {% bibliography --file cv -q @misc %}
 </section>
+
+<!-- <section class="other">
+<h3 class="section-title"></h3>
+TODO: Add the press coverage stuff.
+</section> -->
 
 <section>
 <h3 class="section-title">Work Experience</h3>

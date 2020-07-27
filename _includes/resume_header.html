@@ -6,18 +6,18 @@
 
         <div class="intro">
             <p class="intro__pre">Hello</p>
-            <p class="intro__main">My name is <span>{{ site.name }}</span>, a {{ site.job }}</p>
-            <p class="intro__post">{{ site.location }}</p>
+            <p class="intro__main">My name is <span>{{ site.name }}</span>, a {{ site.data.resume.title }}</p>
+            <p class="intro__post">{{ site.data.resume.location }}</p>
         </div>
 
         <div class="social">
-            {{ if site.github_url }}<a href="{{ site.github_url }}" target="_blank">GitHub</a>{{ endif }}
-            {{ if site.email }}<a href="mailto:{{ site.email }}" target="_blank">Email</a>{{ endif }}
-            {{ if site.linkedin_url }}<a href="{{ site.linkedin_url }}" target="_blank">LinkedIn</a>{{ endif }}
-            {{ if site.scholar_url }}<a href="{{ site.scholar_url }}" target="_blank">Scholar</a>{{ endif }}
-            {{ if site.twitter_url }}<a href="{{ site.twitter_url }}" target="_blank">Twitter</a>{{ endif }}
-            <!-- {{ if site.researchgate_url }}<a href="{{ site.researchgate_url }}" target="_blank">ResearchGate</a>{{ endif }} -->
-            {{ if site.goodreads_url }}<a href="{{ site.goodreads_url }}" target="_blank">Goodreads</a>{{ endif }}
+            {{ if site.data.resume.github_url }}<a href="{{ site.data.resume.github_url }}" target="_blank">GitHub</a>{{ endif }}
+            {{ if site.data.resume.email }}<a href="mailto:{{ site.data.resume.email }}" target="_blank">Email</a>{{ endif }}
+            {{ if site.data.resume.linkedin_url }}<a href="{{ site.data.resume.linkedin_url }}" target="_blank">LinkedIn</a>{{ endif }}
+            {{ if site.data.resume.scholar_url }}<a href="{{ site.data.resume.scholar_url }}" target="_blank">Scholar</a>{{ endif }}
+            {{ if site.data.resume.twitter_url }}<a href="{{ site.data.resume.twitter_url }}" target="_blank">Twitter</a>{{ endif }}
+            <!-- {{ if site.data.resume.researchgate_url }}<a href="{{ site.data.resume.researchgate_url }}" target="_blank">ResearchGate</a>{{ endif }} -->
+            {{ if site.data.resume.goodreads_url }}<a href="{{ site.data.resume.goodreads_url }}" target="_blank">Goodreads</a>{{ endif }}
         </div>
     </div>
 </header>

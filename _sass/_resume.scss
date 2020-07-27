@@ -99,3 +99,27 @@ ol {
         }
     }
 }
+
+.research-statement {
+    margin-bottom: ($spacer * 2);
+
+    .section-title {
+        margin-bottom: $spacer;
+    }
+
+    p {
+        text-align: center;
+        margin-bottom: $spacer;
+    }
+
+    ul {
+        list-style: none;
+        text-align: center;
+        margin-bottom: $spacer;
+
+        li {
+            display: inline;
+            margin-right: $spacer;
+        }
+    }
+}

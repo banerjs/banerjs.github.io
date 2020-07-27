@@ -18,18 +18,7 @@ description: > # this means to ignore newlines until "baseurl:"
   Robotics graduate student at Georgia Tech.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://www.banerjs.com" # the base hostname & protocol for your site, e.g. http://example.com
-
-# Data for Resume
 name: "Siddhartha Banerjee"
-job: "Roboticist-In-Training"
-location: "Atlanta, GA, USA"
-email: banerjs.sid@banerjs.com
-github_url: "http://github.com/banerjs"
-linkedin_url: "https://www.linkedin.com/in/banerjs"
-researchgate_url: "https://www.researchgate.net/profile/Siddhartha_Banerjee5"
-scholar_url: "https://scholar.google.com/citations?user=OoqdqrYAAAAJ&hl=en"
-goodreads_url: "https://www.goodreads.com/user/show/41408373-siddhartha-banerjee"
-twitter_url: "https://twitter.com/banerjs_sid"
 
 # Build settings.
 repository: "banerjs/banerjs.github.io"
