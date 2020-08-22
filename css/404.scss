@@ -7,11 +7,11 @@ html, body {
 }
 
 body {
-    background-color: rgba(0, 0, 0, 1.0);
+    background-color: rgba(0, 0, 0, 0.9);
     background-size: cover;
     background-repeat: no-repeat;
-    min-height: 100vh;
-    min-width: 100vw;
+    // min-height: 100vh;
+    // min-width: 100vw;
     color: rgba(255,255,255,.87);
 }
 
@@ -21,18 +21,16 @@ body {
 }
 
 @media (min-width: 48em) {
-  .content {
-    max-width: 100%;
-    margin-left: 20rem;
-    margin-right: 2rem;
-  }
+    .content {
+        max-width: 100%;
+        margin: auto;
+    }
 }
 
 @media (min-width: 64em) {
-  .content {
-    margin-left: 22rem;
-    margin-right: 4rem;
-  }
+    .content {
+        margin: auto;
+    }
 }
 
 .container-404,
@@ -49,25 +47,10 @@ body {
     .number {
         font-size: 4rem;
         font-weight: 500;
-
-        + .text {
-            margin: 0 0 1rem;
-        }
     }
 
     .text {
         font-weight: 300;
         text-align: center;
-    }
-}
-
-.credits-404 {
-    position: absolute;
-    bottom: 0%;
-    right: 0%;
-    font-size: 0.5rem;
-
-    a {
-        color: white;
     }
 }

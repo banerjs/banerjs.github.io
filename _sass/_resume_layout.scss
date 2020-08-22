@@ -1,7 +1,22 @@
 // @name Layout
 // @description All layout settings and styles
 
-// Default spacing unit
+// Typography
+
+@import url(https://fonts.googleapis.com/css?family=Lora:400,700|Playfair+Display:400,700,900);
+
+$base-font-family: "Lora", Helvetica, Arial, sans-serif;
+$base-font-size:   1.1em;
+
+body {
+    font-family: $base-font-family, serif;
+    font-size: $base-font-size;
+    line-height: 1.4;
+}
+
+
+// Set spacing and layout
+
 $spacer: 20px;
 
 .container {
@@ -26,5 +41,84 @@ $spacer: 20px;
         width: 50px;
         height: 1px;
         background: #222;
+    }
+}
+
+
+// Resume Header - space with image and social links
+
+header {
+    border-bottom: 1px solid #edefee;
+    padding: ($spacer * 2) 0;
+    margin-bottom: ($spacer * 2);
+
+    @media(min-width: 640px) {
+        padding: ($spacer * 10) 0 ($spacer * 3);
+        margin-bottom: ($spacer * 3);
+    }
+}
+
+.intro {
+    margin-bottom: ($spacer * 2);
+
+    @media(min-width: 640px) {
+        max-width: 60%;
+    }
+
+    &__pre, &__post {
+        text-transform: uppercase;
+        letter-spacing: 4px;
+    }
+
+    &__main {
+        font-size: 1.8rem;
+        line-height: 1.2;
+        font-weight: bold;
+        margin: 10px 0 20px;
+
+        @media(min-width: 640px) {
+            font-size: 2.2rem;
+        }
+    }
+}
+
+.image {
+    max-width: 40%;
+    float: right;
+
+    @media(max-width: 640px) {
+        display: none;
+    }
+
+    img {
+        border-radius: 25px;
+    }
+}
+
+.social {
+    a {
+        margin-right: $spacer;
+    }
+}
+
+
+// Footer - space with Resume and CV PDFs
+
+.footer {
+    padding: ($spacer * 2) $spacer;
+    text-align: center;
+    border-top: 1px solid #edefee;
+
+    &__title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    &__subtitle {
+        text-transform: capitalize;
+    }
+
+    &__credits {
+        font-size: 0.7rem;
     }
 }

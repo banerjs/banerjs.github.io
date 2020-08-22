@@ -1,11 +1,64 @@
 <!doctype html>
 <html>
-    {% include resume_head.html %}
-    <body>
-        {% include resume_header.html %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ site.title | escape }}</title>
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+    <link rel="stylesheet" href="{{ "/css/resume.css" | prepend: site.baseurl }}">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+</head>
+
+<body>
+
+    <header>
         <div class="container">
-            {{ content }}
+            <div class="image">
+                <img src="/img/profilepic.jpg" width="250px" alt="profile picture">
+            </div>
+
+            <div class="intro">
+                <p class="intro__pre">Hello</p>
+                <p class="intro__main">My name is <span>{{ site.name }}</span>, a {{ site.data.resume.title }}</p>
+                <p class="intro__post">{{ site.data.resume.location }}</p>
+            </div>
+
+            <div class="social">
+                <a href="{{ site.data.resume.github_url }}" target="_blank">GitHub</a>
+                <a href="mailto:{{ site.data.resume.email }}" target="_blank">Email</a>
+                <a href="{{ site.data.resume.linkedin_url }}" target="_blank">LinkedIn</a>
+                <a href="{{ site.data.resume.scholar_url }}" target="_blank">Scholar</a>
+                <a href="{{ site.data.resume.twitter_url }}" target="_blank">Twitter</a>
+                <a href="{{ site.data.resume.goodreads_url }}" target="_blank">Goodreads</a>
+            </div>
         </div>
-        {% include resume_footer.html %}
-    </body>
+    </header>
+
+    <div class="container">
+        {{ content }}
+    </div>
+
+    <footer class="footer">
+        <p>
+        {% assign pdfs = site.collections | where: "label", "pdf" | first %}
+        {% assign sorted = pdfs.files | sort: 'name' %}
+        {% for doc in sorted %}
+        {% if doc.basename == 'cv' or doc.basename == 'resume' %}
+        <a href="{{ doc.path | replace_first: '_pdf', 'pdf' }}">{{ doc.basename | upcase }}{{ doc.extname | downcase }}</a>
+        {% if forloop.last %}{% else %}<span>&emsp;&emsp;&emsp;</span>{% endif%}
+        {% endif %}
+        {% endfor %}
+        </p>
+        <br/>
+        <p class="footer__credits">Theme credits to: <a href="https://github.com/mattcouchman/jekyll-resume" target="_blank">jekyll-resume</a></p>
+    </footer>
+    {% include ga_footer.html %}
+    <script src="/js/bibtex.js"></script>
+
+</body>
+
 </html>

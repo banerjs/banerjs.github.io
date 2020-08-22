@@ -1,20 +1,40 @@
 ---
-layout: 404
 title: "404: Page not found"
 permalink: 404.html
 ---
 
-<div class="row">
-    <div class="xs-12 md-6 mx-auto">
-        <div id="countUp">
-            <div id="counter" class="number" data-count="404">0</div>
-            <div class="text">Page not found</div>
-            <div class="text">This may not mean anything.</div>
-            <div class="text">I'm probably working on something that has blown up.</div>
-        </div>
-    </div>
-</div>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div class="credits-404">
-    <p>Adapted from <a href="https://codepen.io/moso/pen/KEVPJO" target="_blank">JSFiddle</a></p>
-</div>
+        <title>404: Page not found</title>
+
+        <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: site.url  }}">
+        <link rel="stylesheet" href="{{ "/css/404.css" | prepend: site.url }}">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{{ "/js/404.js" | prepend: site.url }}"></script>
+    </head>
+    <body>
+        <div class="content container-404">
+        <div class="row">
+            <div class="mx-auto">
+                <div id="countUp">
+                    <div id="counter" class="number" data-count="404">0</div>
+                    <div class="text">Page not found</div>
+                    <div class="text">This may not mean anything.</div>
+                    <div class="text">I'm probably working on something that has blown up.</div>
+                    <br/><br/>
+                    <div class="text">
+                        <a href="{{ site.url }}">About Me</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{ site.url }}/blog">Blog</a></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>
