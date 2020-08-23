@@ -1,17 +1,19 @@
 html, body { width: 100%; height: 100%; }
 
-body { background-color: black; background-size: cover; background-repeat: no-repeat; min-height: 100vh; min-width: 100vw; color: rgba(255, 255, 255, 0.87); }
+body { background-color: rgba(0, 0, 0, 0.9); background-size: cover; background-repeat: no-repeat; color: rgba(255, 255, 255, 0.87); }
 
 .mx-auto { margin-left: auto; margin-right: auto; }
 
-@media (min-width: 48em) { .content { max-width: 100%; margin-left: 20rem; margin-right: 2rem; } }
-@media (min-width: 64em) { .content { margin-left: 22rem; margin-right: 4rem; } }
+@media (min-width: 48em) { .content { max-width: 100%; margin: auto; } }
+
+@media (min-width: 64em) { .content { margin: auto; } }
+
 .container-404, .container-404 > .row, .container-404 > .row > div { height: 100%; }
 
 #countUp { text-align: center; height: 100%; margin: 0 auto; }
+
 #countUp .number { font-size: 4rem; font-weight: 500; }
-#countUp .number + .text { margin: 0 0 1rem; }
+
 #countUp .text { font-weight: 300; text-align: center; }
 
-.credits-404 { position: absolute; bottom: 0%; right: 0%; font-size: 0.5rem; }
-.credits-404 a { color: white; }
+/*# sourceMappingURL=404.css.map */
