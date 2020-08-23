@@ -1,11 +1,49 @@
 <!doctype html>
 <html>
-    {% include blog_head.html %}
-    <body>
-        {% include blog_sidebar.html %}
 
-        <div class="content container">
-            {{ content }}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% if page.title %}{{ page.title | escape }}{% else %}Blog | {{ site.name | escape }}{% endif %}</title>
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}Blog Posts{% endif %}">
+
+    <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: site.baseurl }}">
+
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="alternate" type="application/rss+xml" title="Blog | {{ site.name | escape }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
+</head>
+
+<body>
+
+    <div class="sidebar">
+      <div class="container sidebar-sticky">
+        <div class="sidebar-about">
+          <h1>
+            <a href="{{ site.url }}/blog">
+              Blog
+            </a>
+          </h1>
+          <p class="lead">Err... Now what?</p>
         </div>
-    </body>
+
+        <nav class="sidebar-nav">
+          <a class="sidebar-nav-item" href="{{ site.url }}">About Me</a>
+          <a class="sidebar-nav-item active" href="{{ site.url }}/blog">Blog</a>
+          <a class="sidebar-nav-item" href="{{ site.data.resume.github_url }}" target="_blank">GitHub</a>
+          <a class="sidebar-nav-item" href="{{ site.data.resume.scholar_url }}" target="_blank">Scholar</a>
+        </nav>
+
+        <p class="footer__credits">Theme credits to: <a href="https://github.com/poole/hyde" target="_blank">hyde</a></p>
+      </div>
+
+    {% include ga_footer.html %}
+    </div>
+
+    <div class="content container">
+        {{ content }}
+    </div>
+</body>
+
 </html>
