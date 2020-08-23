@@ -432,6 +432,8 @@ a.sidebar-nav-item:hover, a.sidebar-nav-item:focus { text-decoration: underline;
 
 .sidebar .footer__credits { font-size: 0.7rem; }
 
+.post { line-height: 1.4; }
+
 .post small { font-size: 0.9rem; }
 
 .post sup { vertical-align: super; font-size: 0.7rem; }
