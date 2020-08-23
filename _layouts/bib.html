@@ -3,8 +3,10 @@
 {{ reference }}
 {% if entry.url %}
 {% assign urls = (entry.url | split: " ") %}
+
 {% for url in urls %}
-<span><a href="{{ url }}" target="_blank">{% if url contains 'banerjs_' %}download{% else %}link{% endif %}</a></span>
+<span><a href="{{ url | replace: 'website://' '' | replace: 'media://' '' }}" target="_blank">{% if url contains 'website://' %}download{% elsif url contains 'media://' %}media{% else %}link{% endif %}</a>&nbsp;</span>
 {% endfor %}
+
 {% endif %}
 <span class="bibtex"><a href="#{{ entry.key }}" onclick="clicked_bib('bibtex-{{ entry.key }}')">bib</a><pre id="bibtex-{{ entry.key }}">{{ entry.bibtex }}</pre></span>
