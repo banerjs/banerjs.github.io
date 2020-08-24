@@ -46,15 +46,12 @@ permalink: /:year/:month/:day/:title/
 # Citations
 scholar:
   style: ieee
-  # group_by: type
-  # group_order: [article, inproceedings, misc]
-  sort_by: year
-  order: descending
   bibtex_filters:
     - latex
     - smallcaps
     - superscript
-  bibliography_template: bib
+  bibliography_list_tag: div
+  bibliography_item_tag: p
 
 # Collections of pdfs
 collections:
