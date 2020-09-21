@@ -228,3 +228,7 @@ TSWLatexianTemp*
 
 # expex forward references with \gathertags
 *-tags.tex
+
+# R files
+.Rproj.user
+.RData
