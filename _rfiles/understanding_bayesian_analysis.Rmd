@@ -3,7 +3,7 @@ title: "Example of Bayesian Analysis"
 output: html_notebook
 ---
 
-Note: I am not a statistician and am often prone to confusing myself in data analysis. This notebook captures some of _my_ understanding of the subject, particularly from a practical stand-point of _using_ the methods in our HRI studies. There are much better resources for actually conducting Bayesian Analysis that are out there, and I will link to those when I can. Otherwise, I have found that Stack Overflow is a wonderfull resource.
+Note: I am not a statistician and am often prone to confusing myself in data analysis. This notebook captures some of _my_ understanding of the subject, particularly from a practical stand-point of _using_ the methods in our HRI studies. There are much better resources for actually conducting Bayesian Analysis that are out there, and I will link to those both in the text and at the end. I have also found that Stack Overflow is a wonderfull resource.
 
 
 ## Load a dataset
@@ -23,99 +23,113 @@ table(warpbreaks$wool, warpbreaks$tension)
 
 Visualize the data in a boxplot
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(car)
+library(lsmeans)
 library(grid)
 library(gridExtra)
 library(ggplot2)
 library(tidyverse)
 library(broom)
-
+library(ggsignif)
+```
+```{r}
 warpbreaks %>%
   ggplot(aes(log(breaks), x = wool, fill = tension)) +
   geom_boxplot()
 ```
 
-## Using built-in frequentist functions
+## Hypothesis Testing
 
-Let's check if the data are normal by group.
+<!-- ```{r} -->
+<!-- # p1 = warpbreaks %>% -->
+<!-- #   ggplot(aes(y = log(breaks), x = wool, fill = wool)) + -->
+<!-- #   geom_boxplot(alpha = 0.2) + -->
+<!-- #   geom_jitter() -->
+<!-- #  -->
+<!-- # p2 = warpbreaks %>% -->
+<!-- #   ggplot(aes(y = log(breaks), x = tension, fill = tension)) + -->
+<!-- #   geom_boxplot(alpha = 0.2) + -->
+<!-- #   geom_jitter() -->
+<!-- p1 = warpbreaks %>% -->
+<!--   ggplot(aes(log(breaks), fill = wool)) + -->
+<!--   geom_density(alpha = 0.2) -->
 
-```{r}
-# p1 = warpbreaks %>%
-#   ggplot(aes(y = log(breaks), x = wool, fill = wool)) +
-#   geom_boxplot(alpha = 0.2) +
-#   geom_jitter()
-# 
-# p2 = warpbreaks %>%
-#   ggplot(aes(y = log(breaks), x = tension, fill = tension)) +
-#   geom_boxplot(alpha = 0.2) +
-#   geom_jitter()
-p1 = warpbreaks %>%
-  ggplot(aes(log(breaks), fill = wool)) +
-  geom_density(alpha = 0.2)
+<!-- p2 = warpbreaks %>% -->
+<!--   ggplot(aes(log(breaks), fill = tension)) + -->
+<!--   geom_density(alpha = 0.2) -->
 
-p2 = warpbreaks %>%
-  ggplot(aes(log(breaks), fill = tension)) +
-  geom_density(alpha = 0.2)
+<!-- grid.arrange(p1, p2) -->
 
-grid.arrange(p1, p2)
+<!-- # We can also run quick bartlett.test and shapiro.test to check for -->
+<!-- # homoskedasticity and normality -->
+<!-- print(bartlett.test(log(breaks) ~ tension, data = warpbreaks)) -->
+<!-- print(bartlett.test(log(breaks) ~ wool, data = warpbreaks)) -->
+<!-- print(with(warpbreaks, shapiro.test(log(breaks)[wool == 'A']))) -->
+<!-- print(with(warpbreaks, shapiro.test(log(breaks)[wool == 'B']))) -->
+<!-- print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'L']))) -->
+<!-- print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'M']))) -->
+<!-- print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'H']))) -->
+<!-- ``` -->
 
-# We can also run quick bartlett.test and shapiro.test to check for
-# homoskedasticity and normality
-print(bartlett.test(log(breaks) ~ tension, data = warpbreaks))
-print(bartlett.test(log(breaks) ~ wool, data = warpbreaks))
-print(with(warpbreaks, shapiro.test(log(breaks)[wool == 'A'])))
-print(with(warpbreaks, shapiro.test(log(breaks)[wool == 'B'])))
-print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'L'])))
-print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'M'])))
-print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'H'])))
-```
+<!-- The data is approximately normal and does have equal variances between groups. So if we want to, we can run our regular frequentist stats. -->
 
-The data is approximately normal and does have equal variances between groups. So if we want to, we can run our regular frequentist stats.
+First, let's perform the simple hypothesis tests that are the bread and butter of most of our studies. We look at each of the factors that affect breaks independently, starting with the wool factor. (<small>Note: I conducted Bartlett and Shapiro tests to check for homoskedasticity and normality of the data respectively. Not shown here in the interest of space.</small>)
 
 ```{r}
 # print(wilcox.test(log(breaks) ~ wool, data = warpbreaks))
 print(t.test(log(breaks) ~ wool, data = warpbreaks))
 ```
-So according to the naive tests, there is no difference between the wool types... Should we believe this?
+So according to the tests, there is no difference between the wool types... Should we believe this?
 
-In the meanwhile, let's run Omnibus tests on the tension parameter.
+Then, let's run an omnibus test, ANOVA, on the tension parameter. To do this, we set up a linear model (more on this later) and then evaluate the variances within and between groups. (We do a type-II ANOVA here, recommended. There are other types called I or III depending on the types of effects that you might be interested in.)
 
 ```{r}
-aov1 = aov(log(breaks) ~ tension, data = warpbreaks)
-print(summary(aov1))
+model1 = lm(log(breaks) ~ tension, data = warpbreaks)
+print(Anova(model))
 ```
 What does this mean? It shows that overall, a large portion of the breaks are explained by the tension variable. Let's assume that we're interested in all possible pairwise comparisons of the tension variables, then using Tukey's HSD:
 
 ```{r}
-print(TukeyHSD(aov1))
+print(lsmeans(model1, pairwise ~ tension, adjust = "tukey"))
 ```
 
-So there is a significant difference between L and H, and no significant difference otherwise. This seems a bit restrictive, perhaps?
+So there is a significant difference between L and H, and no significant difference otherwise. Again, is this correct?
+
+Let's plot the results we have so far based on the hypothesis tests:
+
+```{r}
+p1 = warpbreaks %>%
+  ggplot(aes(y = log(breaks), x = wool, fill = wool)) +
+  geom_boxplot()
+
+p2 = warpbreaks %>%
+  ggplot(aes(y = log(breaks), x = tension, fill = tension)) +
+  geom_boxplot() +
+  geom_signif(y_position = 4.35, xmin = 1, xmax = 3, annotation = "**")
+
+grid.arrange(p1, p2, ncol = 2)
+```
 
 
-## The Linear Model
+## The linear model
 
-As shown in this wonderful [link](https://lindeloev.github.io/tests-as-linear/), the tests above are just linear regression tests on the data and the associated coefficients. So assume a linear model like the one below:
+In order to perform ANOVA, we had to set up a linear model; what's going on here? As shown in this wonderful [link](https://lindeloev.github.io/tests-as-linear/), all hypothesis tests are essentially **model comparisons** of linear models. Essentially, the tests above are a result of tests on the linear regression coefficients given the data. So assume a linear model like the one below for the **expectation** of the dependent variable (breaks) for the ith data point:
 
-$$log(breaks_i) = \beta_0 + \beta_1 tension_{i==M} + \beta_2 tension_{i==H}$$
+$$\mathop{\mathbb{E}}[log(breaks_i)] = \beta_0 + \beta_1 tension_{i==M} + \beta_2 tension_{i==H}$$
 Then the act of running ANOVA is simply fitting the above model to derive values for $\beta_0, \beta_1, \beta_2$, and then making inferences on the importance of the tension variable's levels based on the confidence interval of those coefficients (this is a super simplified and potentially problematic statement). But what do I mean by that?
 
 Assume that data point $i$ has a $tension$ of $L$. Then, by the equation, we **expect** the value of $log(breaks_i) = \beta_0$.
 
 Similarly, assume that data point $i$ has a tension of $M$. Then, by the equation, we **expect** the value of $log(breaks_i) = \beta_0 + \beta_1$.
 
-And continuing that logic, once we derive the confidence intervals of the variables $\beta_1$ and $\beta_2$, we can comment on the significance of the difference in breaks between levels M and H to the level L (we can also get the third, difference because it is a difference of the first two).
+And continuing that logic, once we derive the confidence intervals of the variables $\beta_1$ and $\beta_2$, we can comment on the significance of the difference in breaks between levels M and H to the level L (we can also get the third, difference because it is a difference of the first two; with some additional computation to account for the variance in the coefficient estimates).
 
-A quick example:
+Looking directly at the coefficient tables for the ANOVA linear model:
 
 ```{r}
-aov2 = lm(log(breaks) ~ tension, data = warpbreaks)
-print(anova(aov2))
-print(summary(aov2))
+print(summary(model1))
 ```
-
-Notice that the first summary table is exactly the same as the ANOVA from earlier. And the coefficient estimates show significant effects of L compared to the other levels. Why are the p-values in the second summary table more significant than in the pairwise comparisons earlier? It's because the pairwise comparisons earlier account for the fact that you're making multiple comparisons. But again, note that you didn't have to do that! You could've used the actual regression equation and the problem setup of how the **expectation** of $log(breaks)$ values relate for the different levels.
 
 The above paragraph subtly brings in the notion of probability by mentioning **expectation**, and this is important. What we're doing every time that we conduct a hypothesis test is that we're coming up with an equation for how the factors affect the expected value of our dependent variable. Mathematically, the problem above has actually been set up so that:
 
@@ -125,14 +139,44 @@ $$\begin{aligned}
 \mathop{\mathbb{E}}[log(breaks_{i==H})] &= \beta_0 + \beta_2
 \end{aligned}$$
 
-And all our inferences have been borne out by analyzing our confidence of the $\beta$ estimates in those formulae.
+<small>(Aside: this is one of [many](https://marissabarlaz.github.io/portfolio/contrastcoding/) [coding](https://phillipalday.com/stats/coding.html) [schemes](https://stats.stackexchange.com/questions/78354/what-is-a-contrast-matrix) that we could've used for the variables. The above is the default in R and the most frequently used: it is called Dummy coding where you use dummy variables to compare all levels of a factor to a reference level, "L" in our case. You might need to use Sum, Contrast, or even Helmert coding depending on the semantic meaning of the factor levels that you are comparing. This is especially important in Two-Way ANOVA, [sneak](https://web.archive.org/web/20191212160606/http://talklab.psy.gla.ac.uk/tvw/catpred/) [preview](https://stats.stackexchange.com/questions/392242/when-is-deviation-coding-useful))</small>
 
+All our inferences have been borne out by analyzing our confidence of the $\beta$ estimates in those formulae. That is:
 
-## Plotting the differences so far
+$$\begin{aligned}
+\beta_1 = \mathop{\mathbb{E}}[log(breaks_{i==M})] - \mathop{\mathbb{E}}[log(breaks_{i==L})] \\
+\beta_2 = \mathop{\mathbb{E}}[log(breaks_{i==H})] - \mathop{\mathbb{E}}[log(breaks_{i==L})]
+\end{aligned}$$
 
-
+If these were the only comparisons we cared about, we could've stopped here and reported results based on the significance of the beta parameters. However, because we wanted to compare all levels against all other levels, we had to do pairwise comparisons followed by a p-value adjustment
 
 
 ## The Two-Way ANOVA
 
-Clearly from the first figure, there is an effect of the wool type when we consider tension (an interaction effect).
+Clearly from the first figure, there is an effect of the wool type when we consider tension (an interaction effect). Now that we know linear model that backs the ANOVA, we can instead formulate a more complete model with two factors AND their interaction effects:
+
+```{r}
+# I chose to use the expanded version of the formula in order to be more explicit about things
+model2 = lm(log(breaks) ~ 1 + tension + wool + tension:wool, data = warpbreaks)
+print(Anova(model2))
+```
+
+And comparing the pair-wise hypothesis tests:
+
+```{r}
+print(lsmeans(model2, pairwise ~ tension * wool, adjustment = "tukey"))
+```
+This is a lot to parse, so let's plot it out:
+
+```{r}
+warpbreaks %>%
+  ggplot(aes(x = wool, y = log(breaks), group = tension, color = tension)) +
+  stat_summary(fun.y = mean, geom = 'point') +
+  stat_summary(fun.y = mean, geom = 'line')
+```
+
+From the plot, it's pretty obvious which differences have borne out as significant.
+
+## So what can we say?
+
+Based on all this, what can we now say about the data? ...
