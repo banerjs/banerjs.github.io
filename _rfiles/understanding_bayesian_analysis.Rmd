@@ -1,6 +1,16 @@
 ---
 title: "Introduction to Bayesian Analysis"
-output: html_notebook
+output:
+  html_document:
+    # theme: readable
+    code_folding: hide
+    df_print: tibble
+    toc: true
+    toc_depth: 4
+    number_sections: false
+    toc_float: true
+    self_contained: false
+    lib_dir: understanding_bayesian_analysis_libs
 ---
 
 Note: This notebook captures some of _my_ understanding of the subject, particularly from a practical stand-point of _using_ the methods in our HRI studies. There are much better resources for actually conducting Bayesian Analysis that are out there, and I will link to those both in the text and at the end. I have also found that Stack Overflow is a wonderfull resource. If you think I have misunderstood or misrepresented any of the following points, please do point those out so that I can improve on this document.
@@ -393,7 +403,55 @@ Other model diagnostics not covered here, but that are also important:
 
 ## Model Inference
 
-Now, we finally get to the meat of the questions that we're interested in. 
+Now, we finally get to the meat of the questions that we're interested in.
+
+First let's look at the conditional effects:
+
+```{r}
+plot(conditional_effects(model3), ask=F)
+```
+
+Q: If I have a loom of type A and tension L, then how many breaks can I expect?
+
+```{r}
+params = as.mcmc(do.call(rbind, as.mcmc(model3)))
+print(exp(mean(params[,"b_Intercept"])))
+```
+A: About 42
+
+Q: What's the likelihood of wool A breaking more than wool B?
+
+```{r}
+woolAB_L_breaks = -params[,"b_woolB"]
+woolAB_M_breaks =  -params[,"b_woolB"] - params[,"b_tensionM:woolB"]
+woolAB_H_breaks = -params[,"b_woolB"] - params[,"b_tensionH:woolB"]
+print(mean(c(woolAB_L_breaks, woolAB_M_breaks, woolAB_M_breaks) > 0))
+```
+So the likelihood is about 42%. And just to show off, here's a slightly more informative answer to a slightly different question - how likely is wool B to break less when the tension is L:
+
+```{r}
+print(hypothesis(model3, "woolB < 0"))
+plot(hypothesis(model3, "woolB < 0"))
+```
+
+It turns out that most of the evidence is in favour of this hypothesis. And the answer is ~44%. The reason I chose this hypothesis is because this one is easy to ask given the coding scheme that we have used. The purpose of the last exercise was to showcase that we can have a prior probability on the "hypothesis" as well as a posterior on it. Both are more informative and useful compared to what we got from frequentist model testing earlier.
+
+
+## Some Final Notes and Resources
+
+With the improvement in the speed of computers and the cheapness of memory, Bayesian analysis has become more popular because a) it answers the questions that we're actually interested in, and b) it can model more complex phenomenon that traditional analysis methods struggle with. In fact, many data analyses we frequently refer to use Bayesian analysis in the backend - e.g. the [Economist's 2020 election model](https://github.com/TheEconomist/us-potus-model), [rt.live's COVID model](https://github.com/rtcovidlive/covid-model) and many more.
+
+Places to learn about this:
+
+1. Coursera and other MOOC resources. I benefited greatly from [this course](https://www.coursera.org/learn/mcmc-bayesian-statistics) on Bayesian stats.
+1. Some prolific bloggers:
+    1. [Michael Betancourt](https://betanalpha.github.io/writing/). I've found the following helpful: [post1](https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html), [post2](https://betanalpha.github.io/assets/case_studies/modeling_and_inference.html)
+    1. [Solomon Kurz's notebook 1](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/) or [notebook 2](https://bookdown.org/content/4857/). It is a practical implementation of a widely used [textbook](http://xcelab.net/rm/statistical-rethinking/) on the subject (I have not read the textbook).
+    1. Rens van de Schoot - [for example](https://www.rensvandeschoot.com/tutorials/brms-priors/).
+1. The package documentation for many of the R packages:
+    1. `brms` [example](https://paul-buerkner.github.io/brms/articles/brms_families.html)
+    1. `rstanarm` [example](https://mc-stan.org/rstanarm/articles/jm.html)
+    1. `bayestestR` [example](https://easystats.github.io/bayestestR/articles/bayestestR.html)
 
 
 ## Post Script
