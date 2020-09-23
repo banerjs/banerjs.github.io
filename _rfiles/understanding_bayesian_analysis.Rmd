@@ -1,9 +1,23 @@
 ---
-title: "Example of Bayesian Analysis"
+title: "Introduction to Bayesian Analysis"
 output: html_notebook
 ---
 
-Note: I am not a statistician and am often prone to confusing myself in data analysis. This notebook captures some of _my_ understanding of the subject, particularly from a practical stand-point of _using_ the methods in our HRI studies. There are much better resources for actually conducting Bayesian Analysis that are out there, and I will link to those both in the text and at the end. I have also found that Stack Overflow is a wonderfull resource.
+Note: This notebook captures some of _my_ understanding of the subject, particularly from a practical stand-point of _using_ the methods in our HRI studies. There are much better resources for actually conducting Bayesian Analysis that are out there, and I will link to those both in the text and at the end. I have also found that Stack Overflow is a wonderfull resource. If you think I have misunderstood or misrepresented any of the following points, please do point those out so that I can improve on this document.
+
+```{r, message=FALSE, warning=FALSE}
+library(boot)
+library(car)
+library(lsmeans)
+library(grid)
+library(gridExtra)
+library(ggplot2)
+library(tidyverse)
+library(broom)
+library(ggsignif)
+library(corrplot)
+library(dotwhisker)
+```
 
 
 ## Load a dataset
@@ -23,78 +37,37 @@ table(warpbreaks$wool, warpbreaks$tension)
 
 Visualize the data in a boxplot
 
-```{r, message=FALSE, warning=FALSE}
-library(car)
-library(lsmeans)
-library(grid)
-library(gridExtra)
-library(ggplot2)
-library(tidyverse)
-library(broom)
-library(ggsignif)
-```
 ```{r}
 warpbreaks %>%
   ggplot(aes(log(breaks), x = wool, fill = tension)) +
   geom_boxplot()
 ```
 
+
 ## Hypothesis Testing
-
-<!-- ```{r} -->
-<!-- # p1 = warpbreaks %>% -->
-<!-- #   ggplot(aes(y = log(breaks), x = wool, fill = wool)) + -->
-<!-- #   geom_boxplot(alpha = 0.2) + -->
-<!-- #   geom_jitter() -->
-<!-- #  -->
-<!-- # p2 = warpbreaks %>% -->
-<!-- #   ggplot(aes(y = log(breaks), x = tension, fill = tension)) + -->
-<!-- #   geom_boxplot(alpha = 0.2) + -->
-<!-- #   geom_jitter() -->
-<!-- p1 = warpbreaks %>% -->
-<!--   ggplot(aes(log(breaks), fill = wool)) + -->
-<!--   geom_density(alpha = 0.2) -->
-
-<!-- p2 = warpbreaks %>% -->
-<!--   ggplot(aes(log(breaks), fill = tension)) + -->
-<!--   geom_density(alpha = 0.2) -->
-
-<!-- grid.arrange(p1, p2) -->
-
-<!-- # We can also run quick bartlett.test and shapiro.test to check for -->
-<!-- # homoskedasticity and normality -->
-<!-- print(bartlett.test(log(breaks) ~ tension, data = warpbreaks)) -->
-<!-- print(bartlett.test(log(breaks) ~ wool, data = warpbreaks)) -->
-<!-- print(with(warpbreaks, shapiro.test(log(breaks)[wool == 'A']))) -->
-<!-- print(with(warpbreaks, shapiro.test(log(breaks)[wool == 'B']))) -->
-<!-- print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'L']))) -->
-<!-- print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'M']))) -->
-<!-- print(with(warpbreaks, shapiro.test(log(breaks)[tension == 'H']))) -->
-<!-- ``` -->
-
-<!-- The data is approximately normal and does have equal variances between groups. So if we want to, we can run our regular frequentist stats. -->
 
 First, let's perform the simple hypothesis tests that are the bread and butter of most of our studies. We look at each of the factors that affect breaks independently, starting with the wool factor. (<small>Note: I conducted Bartlett and Shapiro tests to check for homoskedasticity and normality of the data respectively. Not shown here in the interest of space.</small>)
 
 ```{r}
-# print(wilcox.test(log(breaks) ~ wool, data = warpbreaks))
 print(t.test(log(breaks) ~ wool, data = warpbreaks))
 ```
-So according to the tests, there is no difference between the wool types... Should we believe this?
+
+So according to the tests, there is no significant effect of the wool types... Should we believe this? What does this entail?
 
 Then, let's run an omnibus test, ANOVA, on the tension parameter. To do this, we set up a linear model (more on this later) and then evaluate the variances within and between groups. (We do a type-II ANOVA here, recommended. There are other types called I or III depending on the types of effects that you might be interested in.)
 
 ```{r}
-model1 = lm(log(breaks) ~ tension, data = warpbreaks)
-print(Anova(model))
+model1 = lm(log(breaks) ~ 1 + tension, data = warpbreaks)
+print(Anova(model1))
 ```
-What does this mean? It shows that overall, a large portion of the breaks are explained by the tension variable. Let's assume that we're interested in all possible pairwise comparisons of the tension variables, then using Tukey's HSD:
+
+This ANOVA output should be familiar to those of us that have performed an ANOVA. It shows that overall, a large portion of the breaks are explained by the tension variable. Let's assume that we're interested in all possible pairwise comparisons of the tension variables, then using Tukey's HSD:
 
 ```{r}
 print(lsmeans(model1, pairwise ~ tension, adjust = "tukey"))
 ```
 
-So there is a significant difference between L and H, and no significant difference otherwise. Again, is this correct?
+So there is a significant difference between L and H, and no significant difference otherwise. What does this mean?
 
 Let's plot the results we have so far based on the hypothesis tests:
 
@@ -112,16 +85,26 @@ grid.arrange(p1, p2, ncol = 2)
 ```
 
 
-## The linear model
+## Model Comparisons
 
-In order to perform ANOVA, we had to set up a linear model; what's going on here? As shown in this wonderful [link](https://lindeloev.github.io/tests-as-linear/), all hypothesis tests are essentially **model comparisons** of linear models. Essentially, the tests above are a result of tests on the linear regression coefficients given the data. So assume a linear model like the one below for the **expectation** of the dependent variable (breaks) for the ith data point:
+In order to perform ANOVA, we had to set up a linear model; what's going on here? As shown in this wonderful [link](https://lindeloev.github.io/tests-as-linear/), all hypothesis tests are essentially **model comparisons** of linear models. Essentially, the tests above are a result of tests on the linear regression coefficients given the data.
+
+There is much more theory to this, but at a high level, all hypothesis testing schemes assume a model of the following form (for each data point $i \in {1 ... N}$):
+
+$$\begin{aligned}
+y_i &= \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \ldots + \beta_K x_{i,K} + \epsilon_i\\
+\epsilon_i &\sim \mathcal{N}(0, \sigma^2) [i.i.d.]
+\end{aligned}$$
+
+Assuming $K$ independent variables and $N$ data points. Broadly speaking, the inferences that we draw are based on $\mathop{\mathbb{E}}[y | X], var[y|X]$, the adherence of $\epsilon_i$ to the normally distributed assumption, etc. To that last point, for instance, in a repeated measures ANOVA, we can decompose $\epsilon_i$ to a component that is indepependent of all data points, and another component that depends on the ID of the subject under consideration.
+
+So in our case of the ANOVA from earlier, assume a linear model like the one below for the **expectation** of the dependent variable (breaks) for the ith data point:
 
 $$\mathop{\mathbb{E}}[log(breaks_i)] = \beta_0 + \beta_1 tension_{i==M} + \beta_2 tension_{i==H}$$
-Then the act of running ANOVA is simply fitting the above model to derive values for $\beta_0, \beta_1, \beta_2$, and then making inferences on the importance of the tension variable's levels based on the confidence interval of those coefficients (this is a super simplified and potentially problematic statement). But what do I mean by that?
+Then the act of running ANOVA is simply fitting the above model to derive values for $\beta_0, \beta_1, \beta_2$, and then making inferences on the importance of the tension variable's levels based on the confidence interval of those coefficients. As an example:
 
-Assume that data point $i$ has a $tension$ of $L$. Then, by the equation, we **expect** the value of $log(breaks_i) = \beta_0$.
-
-Similarly, assume that data point $i$ has a tension of $M$. Then, by the equation, we **expect** the value of $log(breaks_i) = \beta_0 + \beta_1$.
+1. Assume that data point $i$ has a $tension$ of $L$. Then, by the equation, we **expect** the value of $log(breaks_i) = \beta_0$.
+1. Similarly, assume that data point $i$ has a tension of $M$. Then, by the equation, we **expect** the value of $log(breaks_i) = \beta_0 + \beta_1$.
 
 And continuing that logic, once we derive the confidence intervals of the variables $\beta_1$ and $\beta_2$, we can comment on the significance of the difference in breaks between levels M and H to the level L (we can also get the third, difference because it is a difference of the first two; with some additional computation to account for the variance in the coefficient estimates).
 
@@ -131,24 +114,28 @@ Looking directly at the coefficient tables for the ANOVA linear model:
 print(summary(model1))
 ```
 
-The above paragraph subtly brings in the notion of probability by mentioning **expectation**, and this is important. What we're doing every time that we conduct a hypothesis test is that we're coming up with an equation for how the factors affect the expected value of our dependent variable. Mathematically, the problem above has actually been set up so that:
+What we're doing every time that we conduct a hypothesis test is that we're coming up with an equation for how the factors affect the expected value of our dependent variable. Mathematically, the problem above has actually been set up so that:
 
 $$\begin{aligned}
-\mathop{\mathbb{E}}[log(breaks_{i==L})] &= \beta_0 \\
-\mathop{\mathbb{E}}[log(breaks_{i==M})] &= \beta_0 + \beta_1 \\
-\mathop{\mathbb{E}}[log(breaks_{i==H})] &= \beta_0 + \beta_2
+\mathop{\mathbb{E}}[log(breaks_{tension_{i==L}})] &= \beta_0 \\
+\mathop{\mathbb{E}}[log(breaks_{tension_{i==M}})] &= \beta_0 + \beta_1 \\
+\mathop{\mathbb{E}}[log(breaks_{tension_{i==H}})] &= \beta_0 + \beta_2
 \end{aligned}$$
 
-<small>(Aside: this is one of [many](https://marissabarlaz.github.io/portfolio/contrastcoding/) [coding](https://phillipalday.com/stats/coding.html) [schemes](https://stats.stackexchange.com/questions/78354/what-is-a-contrast-matrix) that we could've used for the variables. The above is the default in R and the most frequently used: it is called Dummy coding where you use dummy variables to compare all levels of a factor to a reference level, "L" in our case. You might need to use Sum, Contrast, or even Helmert coding depending on the semantic meaning of the factor levels that you are comparing. This is especially important in Two-Way ANOVA, [sneak](https://web.archive.org/web/20191212160606/http://talklab.psy.gla.ac.uk/tvw/catpred/) [preview](https://stats.stackexchange.com/questions/392242/when-is-deviation-coding-useful))</small>
+Aside: this is one of [many](https://marissabarlaz.github.io/portfolio/contrastcoding/) [coding](https://phillipalday.com/stats/coding.html) [schemes](https://stats.stackexchange.com/questions/78354/what-is-a-contrast-matrix) that we could've used for the variables. The above is the default in R and the most frequently used: it is called Dummy coding where you use dummy variables to compare all levels of a factor to a reference level, "L" in our case. You might need to use Sum, Contrast, or even Helmert coding depending on the semantic meaning of the factor levels that you are comparing. This is especially important in Two-Way ANOVA, [sneak](https://web.archive.org/web/20191212160606/http://talklab.psy.gla.ac.uk/tvw/catpred/) [preview](https://stats.stackexchange.com/questions/392242/when-is-deviation-coding-useful))
 
 All our inferences have been borne out by analyzing our confidence of the $\beta$ estimates in those formulae. That is:
 
 $$\begin{aligned}
-\beta_1 = \mathop{\mathbb{E}}[log(breaks_{i==M})] - \mathop{\mathbb{E}}[log(breaks_{i==L})] \\
-\beta_2 = \mathop{\mathbb{E}}[log(breaks_{i==H})] - \mathop{\mathbb{E}}[log(breaks_{i==L})]
+\beta_1 = \mathop{\mathbb{E}}[log(breaks_{tension_{i==M}})] - \mathop{\mathbb{E}}[log(breaks_{tension_{i==L}})] \\
+\beta_2 = \mathop{\mathbb{E}}[log(breaks_{tension_{i==H}})] - \mathop{\mathbb{E}}[log(breaks_{tension_{i==L}})]
 \end{aligned}$$
 
-If these were the only comparisons we cared about, we could've stopped here and reported results based on the significance of the beta parameters. However, because we wanted to compare all levels against all other levels, we had to do pairwise comparisons followed by a p-value adjustment
+If these were the only comparisons we cared about, we could've stopped here and reported results based on the significance of the beta parameters (notice that the mean and standard error of the estimates from the pairwise comparison match the coefficient estimates). However, because we wanted to compare all levels against all other levels, we had to do pairwise comparisons followed by a p-value adjustment (at super high and potentially problematic level, the p-values are different because a. there's an additional comparison that's being made, and b. we need account for the error term and the variances in our estimates). Perhaps a visualization of the estimates might help make this more clear (we don't plot the intercept in this situation because it doesn't have meaning by itself; in other conditions, particularly different coding schemes, it has a different interpretation).
+
+```{r}
+dwplot(model1, style = "distribution", vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
+```
 
 
 ## The Two-Way ANOVA
@@ -161,12 +148,19 @@ model2 = lm(log(breaks) ~ 1 + tension + wool + tension:wool, data = warpbreaks)
 print(Anova(model2))
 ```
 
+The result tells us that tension is a significant determiner of breaks; but that there is a significant interaction effect between tension and the wool type too.
+
 And comparing the pair-wise hypothesis tests:
 
 ```{r}
-print(lsmeans(model2, pairwise ~ tension * wool, adjustment = "tukey"))
+# These are the same as before because we avarage over all levels of wool (as mentioned in the output)
+print(emmeans(model2, pairwise ~ tension, adjustment = "tukey"))
 ```
-This is a lot to parse, so let's plot it out:
+```{r}
+print(emmeans(model2, pairwise ~ tension * wool, adjustment = "tukey"))
+```
+
+This is a lot to parse, so let's plot the interaction effects out:
 
 ```{r}
 warpbreaks %>%
@@ -177,6 +171,50 @@ warpbreaks %>%
 
 From the plot, it's pretty obvious which differences have borne out as significant.
 
-## So what can we say?
+But, let's return to the underlying linear model. What's happening with the coefficients there?
 
-Based on all this, what can we now say about the data? ...
+```{r}
+print(summary(model2))
+```
+
+First, let's identify the model that we have actually created:
+
+$$\begin{aligned}
+\mathop{\mathbb{E}}[log(breaks_i)] &= \beta_0 + \beta_1 tension_{i==M} + \beta_2 tension_{i==H} + \beta_3 wool_{i==B} \\
+  &+ \beta_4 tension_{i==M} wool_{i==B} + \beta_5 tension_{i==H} wool_{i==B}
+\end{aligned}$$
+
+So according to the model, for wool A, the high and medium tensions lead to significantly fewer breaks than the low tension loom; low tension in wool B leads to significantly fewer breaks than low tension in wool A. However, interpreting the interaction terms is slightly more complicated (for one, think of it as a corollary to $A \cup  B = A + B - A \cap B$; for another, all coefficient hypothesis tests are compared to a null level of 0 and the interaction effect is displaced). For completeness, here's a plot of the coefficients:
+
+```{r}
+dwplot(model2, style = "distribution", vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
+```
+
+
+## The Reason(s) for a Bayesian approach
+
+Despite the power of the model comparisons and hypothesis tests above, it's easy to lose sight of what we're actually interested in. We're interested in answering questions of the following nature:
+
+1. If I have a loom with wool type A and tension L, then how many breaks can I expect?
+1. What's the likelihood of wool A breaking more than wool B?
+1. If I reduce the tension in wool A from H to M, what's the expected change in the number of breaks?
+
+Unfortunately, the hypothesis tests above answer the (often unasked and uninteresting question): "what's the probability that 95% of all the possible differences between &lt;pick 2 conditions&gt; is 0?" (or some variant thereof). We then use the answer for this question to inform our possible answers about everything else.
+
+Aside: actually it's worse. The method of estimating the model(s) above involve an optimization procedure that minimizes a loss function, which in reality *restricts* the realm of possible scenarios that can be used to answer the questions that we're actually interested in. This last statement is my best paraphrase of a wonderful (and long) investigation of this phenomenon by [Michael Betancourt](https://betanalpha.github.io/assets/case_studies/modeling_and_inference.html).
+
+
+## The Bayesian Model
+
+We start the Bayesian Model by making explicit some of the decisions that we had made in describing the data that was given to us:
+
+1. We assume for the experiment, that 
+
+
+## Post Script
+
+I don't cover GLMs and more interesting methods such as Generalized Method of Moments (GMMs) in this document. However, they are quite useful in their own circumstances and have their corresponding counterparts in the Bayesian Analysis world. See the supplementary material for more details.
+
+```{r}
+sessionInfo()
+```
