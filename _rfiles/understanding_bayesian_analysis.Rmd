@@ -17,6 +17,16 @@ library(broom)
 library(ggsignif)
 library(corrplot)
 library(dotwhisker)
+library(rjags)
+library(brms)
+library(bayesplot)
+library(bayestestR)
+library(sjstats)
+library(parameters)
+library(see)
+
+# Setup for multiprocessing
+# options(mc.cores = 4)
 ```
 
 
@@ -89,7 +99,7 @@ grid.arrange(p1, p2, ncol = 2)
 
 In order to perform ANOVA, we had to set up a linear model; what's going on here? As shown in this wonderful [link](https://lindeloev.github.io/tests-as-linear/), all hypothesis tests are essentially **model comparisons** of linear models. Essentially, the tests above are a result of tests on the linear regression coefficients given the data.
 
-There is much more theory to this, but at a high level, all hypothesis testing schemes assume a model of the following form (for each data point $i \in {1 ... N}$):
+There is much more theory to this, but at a high level, all hypothesis testing schemes assume a model of the following form (for each data point $i \in \{1 ... N\}$):
 
 $$\begin{aligned}
 y_i &= \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + \ldots + \beta_K x_{i,K} + \epsilon_i\\
@@ -208,12 +218,192 @@ Aside: actually it's worse. The method of estimating the model(s) above involve 
 
 We start the Bayesian Model by making explicit some of the decisions that we had made in describing the data that was given to us:
 
-1. We assume for the experiment, that 
+1. We assume for the experiment, that our effects in the model, i.e. $\beta_j \forall j \in \{1 ... K\}$, are distributed according to some probability distribution, let's say normally: $\beta_j \sim \mathcal{N}(\mu^\beta_0, \sigma^\beta_0)$. To begin, we can assign the normal some **prior** value, let's say $\mu^\beta_0 = 0, \sigma^\beta_0 = 10$ (given the estimate values and std. errors above, this is a very _non-informative_ prior).
+1. We then assume that given the model parameters, each output, $log(breaks_i) = y_i$ is also distributed as normally, i.e. $y_i \sim \mathcal{N} (\mu, \sigma)$ where $\mu = \mathop{\mathbb{E}}[y] = \beta_0 + \beta_1 x_1 + \ldots + \beta_K x_K$, and $\sigma \sim IG(2.5, 2.5)$ (the Inverse-Gamma distribution is often used as a conjugate-prior for the variance of the normal distribution).
+
+Plotting the priors:
+
+```{r}
+p1 = rnorm(10000, 0, 10) %>% as_tibble() %>% ggplot(aes(value)) + geom_density() + ggtitle("Parameter Prior")
+p2 = rgamma(10000, 5/2, 5/2) %>% as_tibble() %>% ggplot(aes(1/value)) + geom_density() + ggtitle("Sigma Prior")
+grid.arrange(p1, p2)
+```
+
+The above model can be represented as a graph, which is often a very useful method of thinking about models:
+
+![Graphical Model. Note that $B == \beta$](bayes_model.png)
+
+The goal of Bayesian analysis is to use the data to update the parameters of the model. And the primary (as well as most general) method of doing so is through MCMC sampling.
+
+
+## Bayesian Analysis
+
+Given the above model, we can now use data to update the parameter values using M-H sampling. To do so:
+
+```{r}
+model3 = brm(
+  log(breaks) ~ 0 + Intercept + tension + wool + tension:wool,
+  family = "gaussian",
+  prior = c(set_prior("normal(0, 10)", class = "b"),
+            set_prior("inv_gamma(2.5, 2.5)", class = "sigma")),
+  data = warpbreaks,
+  seed = 0xf00d,
+  save_all_pars = T,
+  sample_prior = T,
+)
+```
+
+As you can see in the output above, there were 4 sampling processes (**chains**) that took place in order to perform parameter estimation on the model that we defined. Let's examine the output of those chains:
+
+```{r}
+print(model3)
+```
+
+There are a lot of new columns in this output, so here's a quick run through of the most salient parts of the outputs:
+
+1. The first few lines confirm how the model was set up, with a Gaussian distribution for the output, the formula for determining $\mu$, the number of sampling chains, the number of warmup iterations, the number of actual sampling iterations, the frequency of saving samples (thinning), etc.
+1. The **Estimate** is the part that we're most interested in - it's the parameter estimate from the sampling process. Notice that it is almost the same as from the linear modeling earlier.
+1. The estimated error is also of importance for making our inferences; as are the CI - **credible** (instead of *confidence*) intervals.
+1. Rhat is a convergence diagnostic for the MCMC sampling. More on that in a bit. Rhat should be between 1 and 1.01 for the sampling chains to be considered as converged.
+1. ESS (Effective Sample Size) is another convergence diagnostic. It indicates the number of samples (out of the 4000 above for each parameter) that can be considered "independent" draws. Ideally, we would want an ESS of [atleast 10,000](http://doingbayesiandataanalysis.blogspot.com/2018/02/run-mcmc-to-achieve-effective-sample.html).
+
+Meanwhile, let's focus on the parameters themselves. Here's another view of them:
+
+```{r}
+print(model_parameters(model3, ci_method = "hdi", rope_range = c(-0.1, 0.1), rope_ci = 1))
+```
+
+The above output introduces a few new columns and changes a few old ones. In detail:
+
+1. The **Estimate** is made explicit as a *median* estimate of all the samples that were made
+1. The CI quatify the **Uncertainty** in our estimate. Note that the 95% CI from earlier are now an 89% CI: in the Bayesian analysis world, there is a movement to recognize that confidence intervals are arbitrary and therefore many analyses report an arbitrary 89% CI instead of the standard 95% *confidence* interval. Read [this article](https://easystats.github.io/bayestestR/articles/credible_interval.html) for more information.
+1. The pd quantifies the **Existence** of an effect. Called a [Probability of direction](https://easystats.github.io/bayestestR/articles/probability_of_direction.html), it is *strongly correlated* to the p-value. It tells us what percentage of the credible interval for a parameter is positive (or negative). The higher the pd, the more the effect is likely to exist.
+1. The ROPE is an index to the **Significance** of an effect. Called a [Region of Preactical Equivalence](https://easystats.github.io/bayestestR/articles/region_of_practical_equivalence.html), it is a "more meaningful" index of whether an effect is "different enough" for the application domain. The region defined for the ROPE is usually application dependent, but if no such domain knowledge of a ROPE exists, then one can take $[-0.1SD, 0.1SD]$ as the ROPE. The lower the amount of overlap in the ROPE, the more significant the effect. (For the above table, ROPE is defined as $[-0.1, 0.1]$)
+1. ESS and Rhat are the same as above (and explained further below)
+
+The above columns are what should generally be used to report Bayesian analysis results: [link](https://easystats.github.io/bayestestR/articles/guidelines.html). Note: there is another metric, called a Bayes Factor, that can be used for reporting results. The decision of using pd+ROPE or pd+BF is up to you. In my understanding, ROPE is more meaningful when considering the real effect of parameters while BF is more meaningful when comparing different models (the distinction seems somewhat arbitrary though).
+
+Most of the above discussion is perhaps more understandable when we look at the distribution of parameter estimates from the Bayesian modeling:
+
+```{r}
+mcmc_areas(as.matrix(model3), regex_pars = "b_", prob = 0.95, prob_outer = 1.) +
+  geom_rect(ymin = -Inf, ymax = Inf,
+            xmin = -0.1, xmax = 0.1,
+            color = "black", fill = "#fefefe", alpha = 0.01) +
+  annotate("text", x = 0.5, y = 6, label = "ROPE")
+```
+
+### Model Diagnostics
+
+The main part of model diagnostics deal with diagnostics of the convergence of sampling. You want to make sure that you are:
+
+1. Sampling from the full-posterior of the model and not a small part of it (or not even on it)
+1. The samples of parameters explain the data relatively well: the quality of the fit
+
+To begin with, let's create another model that we know hasn't converged at all in its estimates (we reduce the number of samples that we are considering and reduce the warmup; note the warnings):
+
+```{r, message=FALSE}
+model4 = brm(
+  log(breaks) ~ 0 + Intercept + tension + wool + tension:wool,
+  family = "gaussian",
+  prior = c(set_prior("normal(0, 10)", class = "b"),
+            set_prior("inv_gamma(2.5, 2.5)", class = "sigma")),
+  data = warpbreaks,
+  seed = 0xf00d,
+  save_all_pars = T,
+  iter = 50,
+  warmup = 20,
+)
+```
+```{r}
+print(model4)
+```
+
+
+Ideally, during sampling, we want the sampler to essentially sample random values within a parameter region. This can be seen by visualizing the chains:
+
+```{r}
+mcmc_trace(as.mcmc(model3), regex_pars = "b_")
+```
+
+Notice how all the chains appear to be sampling the same region and there is no discernable pattern between one iteration of the chain and the next. Compare that to the chain from the unconverged model (this is a bit farcical, but serves to illustrate the point):
+
+```{r}
+mcmc_trace(as.mcmc(model4), regex_pars = "b_")
+```
+
+From another source, the [Coursera course on Bayesian Statistics](https://www.coursera.org/learn/mcmc-bayesian-statistics), here are some other examples of good chain mixing vs. not:
+
+![Examples of a good chain (left) and high autocorrelation (middle) or poor prior specification (right)](bad_sampling.png)
+
+The Rhat, mentioned previously captures the mixing of the chains. We can plot those:
+
+```{r}
+p1 = mcmc_rhat(rhat(model3)) + ggtitle("Converged Model")
+p2 = mcmc_rhat(rhat(model4)) + ggtitle("Not Converged Model")
+grid.arrange(p1, p2)
+```
+
+Similarly, we can check the autocorrelation for each of the models (just the first chain and a couple of parameters so as not to clutter the plot):
+
+```{r}
+p1 = mcmc_acf(as.mcmc(model3)[1], pars = c("b_tensionM", c("b_woolB"))) + ggtitle("Converged Model")
+p2 = mcmc_acf(as.mcmc(model4)[1], pars = c("b_tensionM", c("b_woolB"))) + ggtitle("Not Converged Model")
+grid.arrange(p1, p2)
+```
+
+Autocorrelation isn't terrible for either model. Note that this parameter is mostly affected by the type of sampling (particularly the step size) that is used. By default, the package we're using performs what's known as NUTS sampling, which determines the step size on its own. The autocorrelation determines the effective sample size (ESS mentioned earlier), which in turn determines how many samples we have to make the inferences that we want to.
+
+With the diagnostics of the sampling done, we can now check on the prediction quality of the model. One method of performing this is through Leave One-Out Cross-Validation. The comparison checks between different models; here it is often a good idea to check against a null model:
+
+```{r, message=F, warning=F}
+model5 = brm(
+  log(breaks) ~ 0 + Intercept,
+  family = "gaussian",
+  prior = c(set_prior("normal(0, 10)", class = "b"),
+            set_prior("inv_gamma(2.5, 2.5)", class = "sigma")),
+  data = warpbreaks,
+  seed = 0xf00d,
+  save_all_pars = T,
+)
+model5 = add_criterion(model5, "loo", reloo=T)
+```
+
+```{r}
+model3 = add_criterion(model3, "loo", reloo = T)
+print(loo_compare(model5, model3))
+```
+
+A higher ELPD indicates a better fit to the data. We can try to observe this visually:
+
+```{r, warning=F}
+p1 = pp_check(model3, type="dens_overlay") + ggtitle("Full Model") + ylim(0, 1)
+p2 = pp_check(model5, type="dens_overlay") + ggtitle("Null Model") + ylim(0, 1)
+p3 = pp_check(model3, type="stat_2d") + ggtitle("Full Model") + xlim(3, 3.5) + ylim(0.2, 0.8)
+p4 = pp_check(model5, type="stat_2d") + ggtitle("Null Model") + xlim(3, 3.5) + ylim(0.2, 0.8)
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
+
+The light blue points in the plots above are some of the sampled values of $log(breaks)$ from the parameters of each of the models.
+
+Other model diagnostics not covered here, but that are also important:
+
+1. Tests of model specification by doing ablations or using different probability distributions
+1. Tests of the influence of priors by using different priors and checking the final estimates (a sensitivity analysis)
+
+## Model Inference
+
+Now, we finally get to the meat of the questions that we're interested in. 
 
 
 ## Post Script
 
-I don't cover GLMs and more interesting methods such as Generalized Method of Moments (GMMs) in this document. However, they are quite useful in their own circumstances and have their corresponding counterparts in the Bayesian Analysis world. See the supplementary material for more details.
+I don't cover the following in this document although these are super useful too:
+
+1. GLMs and more interesting methods such as Generalized Method of Moments (GMMs) in this document. Bayesian analysis often shines when non-normal distributions are considered for the data.
+1. Hierarchical modeling and Mixed modeling: when there are multiple levels of variables that affect the output. This is another area where the Bayesian modeling approach is often more beneficial.
+
+See the supplementary material for more details on these topics that are not covered..
 
 ```{r}
 sessionInfo()
