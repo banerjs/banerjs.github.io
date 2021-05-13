@@ -55,7 +55,7 @@
         <div class="post">
   <h1 class="post-title">Importing Python packages with pkgutil</h1>
   <span class="post-date">15 Jun 2019</span>
-  <p>We Python programmers have our cherished shortcuts around <a href="https://xkcd.com/1987/">package search hell</a>. The easiest by far is probably <code class="language-plaintext highlighter-rouge">sys.path.insert(0)</code>, but it isn’t always feasible or generalizable across machines. This post is about <code class="language-plaintext highlighter-rouge">pkgutil</code><sup id="fnref:docs-link" role="doc-noteref"><a href="#fn:docs-link" class="footnote">1</a></sup>, a package that I recently stumbled across, and whether it is a suitable substitute to <code class="language-plaintext highlighter-rouge">sys.path.insert</code>. A couple of disclaimers:</p>
+  <p>We Python programmers have our cherished shortcuts around <a href="https://xkcd.com/1987/">package search hell</a>. The easiest by far is probably <code class="language-plaintext highlighter-rouge">sys.path.insert(0)</code>, but it isn’t always feasible or generalizable across machines. This post is about <code class="language-plaintext highlighter-rouge">pkgutil</code><sup id="fnref:docs-link" role="doc-noteref"><a href="#fn:docs-link" class="footnote" rel="footnote">1</a></sup>, a package that I recently stumbled across, and whether it is a suitable substitute to <code class="language-plaintext highlighter-rouge">sys.path.insert</code>. A couple of disclaimers:</p>
 
 <ol>
   <li>This is NOT a tutorial on how to use <code class="language-plaintext highlighter-rouge">pkgutil</code>; I leave that to other experts.</li>
@@ -64,7 +64,7 @@
 
 <h2 id="background">Background</h2>
 
-<p>I have been working on code to run robot tasks, which has the following directory structure<sup id="fnref:assitance-arbitration" role="doc-noteref"><a href="#fn:assitance-arbitration" class="footnote">2</a></sup>:</p>
+<p>I have been working on code to run robot tasks, which has the following directory structure<sup id="fnref:assitance-arbitration" role="doc-noteref"><a href="#fn:assitance-arbitration" class="footnote" rel="footnote">2</a></sup>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task_executor
 |-- __init__.py
@@ -82,7 +82,7 @@
 
 <p>As a short summary, the <code class="language-plaintext highlighter-rouge">task_executor</code> Python package contains utilities to call robot perception and motion actions in order to complete a task, and its primary interface to the rest of the robot system is through clients defined within the Python subpackage <code class="language-plaintext highlighter-rouge">actions</code>. To make the interface to clients easy, external packages simply import <code class="language-plaintext highlighter-rouge">task_executor.actions</code>, which means that the file <code class="language-plaintext highlighter-rouge">task_executor/actions/__init__.py</code> needs to be kept upto date with all the modules that are defined in the path <code class="language-plaintext highlighter-rouge">task_executor/actions/</code>.</p>
 
-<p>Before my foray into <code class="language-plaintext highlighter-rouge">pkgutil</code>, I manually synchronized <code class="language-plaintext highlighter-rouge">__init__.py</code> with every action update. However, when the number of actions reached 42 (and more), the situation became untenable: I needed a mechanism to automatically find and import action clients from a specified submodule in a package<sup id="fnref:does-not-work" role="doc-noteref"><a href="#fn:does-not-work" class="footnote">3</a></sup>.</p>
+<p>Before my foray into <code class="language-plaintext highlighter-rouge">pkgutil</code>, I manually synchronized <code class="language-plaintext highlighter-rouge">__init__.py</code> with every action update. However, when the number of actions reached 42 (and more), the situation became untenable: I needed a mechanism to automatically find and import action clients from a specified submodule in a package<sup id="fnref:does-not-work" role="doc-noteref"><a href="#fn:does-not-work" class="footnote" rel="footnote">3</a></sup>.</p>
 
 <h2 id="importing-on-the-path">Importing on the PATH</h2>
 
@@ -120,7 +120,7 @@
     <span class="n">actions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s">"Action"</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>As easily as that, I now have an <code class="language-plaintext highlighter-rouge">__init__.py</code> that I never have to remember to update when changing one of the many actions that are defined<sup id="fnref:but-caveat" role="doc-noteref"><a href="#fn:but-caveat" class="footnote">4</a></sup>.</p>
+<p>As easily as that, I now have an <code class="language-plaintext highlighter-rouge">__init__.py</code> that I never have to remember to update when changing one of the many actions that are defined<sup id="fnref:but-caveat" role="doc-noteref"><a href="#fn:but-caveat" class="footnote" rel="footnote">4</a></sup>.</p>
 
 <h2 id="importing-off-the-path">Importing off the PATH</h2>
 
