@@ -55,6 +55,7 @@ scholar:
     - smallcaps
     - superscript
   bibliography_template: bib
+  repository: pdf
 
 # Collections of pdfs
 collections:
