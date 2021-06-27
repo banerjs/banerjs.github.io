@@ -2,13 +2,17 @@
   company: Diligent Robotics
   period: 2021 - current
   description: |-
-    - Developing software modules for the Moxi robot
+    - Lead for remote operations
+    - Developing ROS packages to improve robot autonomy
+    - Developing interfaces to monitor and teleoperate robot
 
 - title: Robotics Intern
   company: Diligent Robotics
   period: Summer 2018
   description: |-
-    - Developed software modules for the Moxi robot
+    - Worked on the navigation stack
+    - Implemented a web interface to control the robot
+    - Designed and implemented numerous ROS packages
 
 - title: Research Intern
   company: Microsoft

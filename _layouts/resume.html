@@ -47,7 +47,7 @@
         {% assign pdfs = site.collections | where: "label", "pdf" | first %}
         {% assign sorted = pdfs.files | sort: 'name' %}
         {% for doc in sorted %}
-        {% if doc.basename == 'cv' or doc.basename == 'resume' %}
+        {% if doc.basename == 'resume' %}
         <a href="{{ doc.path | replace_first: '_pdf', 'pdf' }}">{{ doc.basename | upcase }}{{ doc.extname | downcase }}</a>
         {% if forloop.last %}{% else %}<span>&emsp;&emsp;&emsp;</span>{% endif%}
         {% endif %}
