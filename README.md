@@ -24,6 +24,13 @@ There are three parallel branches in this repo:
 
 `bundle exec jekyll serve -P 8000 --drafts`
 
+**Prerequisites**:
+
+* Install [RVM](https://github.com/rvm/ubuntu_rvm)
+* (temporary; hopefully) Install older openssl: `rvm pkg install openssl`
+* Install ruby (matching the Gemfile version): `rvm install ruby-3.0.0 --with-openssl-dir=/usr/share/rvm/usr` (different openssl is hopefully temporary)
+* Install from Gemfile: `bundle install`
+
 ## TODO
 
 - Create YAML files for the different sections of the resume, and fill them out
