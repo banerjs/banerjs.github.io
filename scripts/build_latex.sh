@@ -12,10 +12,10 @@ cd _pdf/
 #   c) suppress certain warnings from commands
 for texfile in *.tex; do
     filename=$(basename ${texfile} .tex)
-    if [ ${filename} = "cv" ]; then
-        echo "Skipping " ${filename}
-        continue
-    fi
+    # if [ ${filename} = "cv" ]; then
+    #     echo "Skipping " ${filename}
+    #     continue
+    # fi
 
     echo "Building " ${filename}
     xelatex ${filename}.tex
