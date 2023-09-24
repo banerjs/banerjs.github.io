@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Blog | Siddhartha Banerjee</title>
- <link href="http://www.banerjs.com/feed.xml" rel="self"/>
- <link href="http://www.banerjs.com/"/>
- <updated>2023-05-15T19:09:14-04:00</updated>
- <id>http://www.banerjs.com</id>
+ <link href="https://banerjs.github.io/feed.xml" rel="self"/>
+ <link href="https://banerjs.github.io/"/>
+ <updated>2023-09-24T17:52:09-04:00</updated>
+ <id>https://banerjs.github.io</id>
  <author>
    <name>Siddhartha Banerjee</name>
    <email></email>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Importing Python packages with pkgutil</title>
-   <link href="http://www.banerjs.com/2019/06/15/importing-pkgs-with-pkgutil/"/>
+   <link href="https://banerjs.github.io/2019/06/15/importing-pkgs-with-pkgutil/"/>
    <updated>2019-06-15T00:00:00-04:00</updated>
-   <id>http://www.banerjs.com/2019/06/15/importing-pkgs-with-pkgutil</id>
+   <id>https://banerjs.github.io/2019/06/15/importing-pkgs-with-pkgutil</id>
    <content type="html">&lt;p&gt;We Python programmers have our cherished shortcuts around &lt;a href=&quot;https://xkcd.com/1987/&quot;&gt;package search hell&lt;/a&gt;. The easiest by far is probably &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sys.path.insert(0)&lt;/code&gt;, but it isn’t always feasible or generalizable across machines. This post is about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pkgutil&lt;/code&gt;&lt;sup id=&quot;fnref:docs-link&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:docs-link&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, a package that I recently stumbled across, and whether it is a suitable substitute to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sys.path.insert&lt;/code&gt;. A couple of disclaimers:&lt;/p&gt;
 
 &lt;ol&gt;
