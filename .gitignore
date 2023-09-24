@@ -3,6 +3,7 @@ _site
 .jekyll-metadata
 .jekyll-cache/
 *.sublime-workspace
+*.code-workspace
 *.lock
 deploy_key
 
