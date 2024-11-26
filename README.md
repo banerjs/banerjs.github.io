@@ -27,8 +27,12 @@ There are three parallel branches in this repo:
 **Prerequisites**:
 
 * Install [RVM](https://github.com/rvm/ubuntu_rvm)
-* (temporary; hopefully) Install older openssl: `rvm pkg install openssl`
-* Install ruby (matching the Gemfile version): `rvm install ruby-3.0.0 --with-openssl-dir=/usr/share/rvm/usr` (different openssl is hopefully temporary)
+* (temporary; hopefully) Install older openssl:
+    * Ubuntu: `rvm pkg install openssl`
+    * OSX: `brew install openssl@1.1`
+* Install ruby (matching the Gemfile version):
+    * Ubuntu: `rvm install ruby-3.3.6 --with-openssl-dir=/usr/share/rvm/usr` (different openssl is hopefully temporary)
+    * OSX: `rvm install ruby-3.3.6 --with-openssl-dir=$(brew --prefix openssl@1.1)`
 * Install from Gemfile: `bundle install`
 
 ## TODO
