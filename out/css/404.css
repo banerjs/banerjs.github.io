@@ -1,0 +1,49 @@
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.9);
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 48em) {
+  .content {
+    max-width: 100%;
+    margin: auto;
+  }
+}
+@media (min-width: 64em) {
+  .content {
+    margin: auto;
+  }
+}
+.container-404,
+.container-404 > .row,
+.container-404 > .row > div {
+  height: 100%;
+}
+
+#countUp {
+  text-align: center;
+  height: 100%;
+  margin: 0 auto;
+}
+#countUp .number {
+  font-size: 4rem;
+  font-weight: 500;
+}
+#countUp .text {
+  font-weight: 300;
+  text-align: center;
+}
+
+/*# sourceMappingURL=404.css.map */

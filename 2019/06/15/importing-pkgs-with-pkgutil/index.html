@@ -9,10 +9,10 @@
     <title>Importing Python packages with pkgutil</title>
     <meta name="description" content="We Python programmers have our cherished shortcuts around package search hell. The easiest by far is probably sys.path.insert(0), but it isn’t always feasibl...">
 
-    <link rel="stylesheet" href="/css/blog.css">
+    <link rel="stylesheet" href="/css/blog_main.css">
 
-    <link rel="canonical" href="https://banerjs.github.io/2019/06/15/importing-pkgs-with-pkgutil/">
-    <link rel="alternate" type="application/rss+xml" title="Blog | Siddhartha Banerjee" href="https://banerjs.github.io/feed.xml">
+    <link rel="canonical" href="http://localhost:8000/2019/06/15/importing-pkgs-with-pkgutil/">
+    <link rel="alternate" type="application/rss+xml" title="Blog | Siddhartha Banerjee" href="http://localhost:8000/feed.xml">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
       <div class="container sidebar-sticky">
         <div class="sidebar-about">
           <h1>
-            <a href="https://banerjs.github.io/blog">
+            <a href="http://localhost:8000/blog">
               Blog
             </a>
           </h1>
@@ -29,8 +29,8 @@
         </div>
 
         <nav class="sidebar-nav">
-          <a class="sidebar-nav-item" href="https://banerjs.github.io">About Me</a>
-          <a class="sidebar-nav-item active" href="https://banerjs.github.io/blog">Blog</a>
+          <a class="sidebar-nav-item" href="http://localhost:8000">About Me</a>
+          <a class="sidebar-nav-item active" href="http://localhost:8000/blog">Blog</a>
           <a class="sidebar-nav-item" href="http://github.com/banerjs" target="_blank">GitHub</a>
           <a class="sidebar-nav-item" href="https://scholar.google.com/citations?user=OoqdqrYAAAAJ&hl=en" target="_blank">Scholar</a>
         </nav>
@@ -44,7 +44,7 @@
         <div class="post">
   <h1 class="post-title">Importing Python packages with pkgutil</h1>
   <span class="post-date">15 Jun 2019</span>
-  <p>We Python programmers have our cherished shortcuts around <a href="https://xkcd.com/1987/">package search hell</a>. The easiest by far is probably <code class="language-plaintext highlighter-rouge">sys.path.insert(0)</code>, but it isn’t always feasible or generalizable across machines. This post is about <code class="language-plaintext highlighter-rouge">pkgutil</code><sup id="fnref:docs-link" role="doc-noteref"><a href="#fn:docs-link" class="footnote" rel="footnote">1</a></sup>, a package that I recently stumbled across, and whether it is a suitable substitute to <code class="language-plaintext highlighter-rouge">sys.path.insert</code>. A couple of disclaimers:</p>
+  <p>We Python programmers have our cherished shortcuts around <a href="https://xkcd.com/1987/">package search hell</a>. The easiest by far is probably <code class="language-plaintext highlighter-rouge">sys.path.insert(0)</code>, but it isn’t always feasible or generalizable across machines. This post is about <code class="language-plaintext highlighter-rouge">pkgutil</code><sup id="fnref:docs-link"><a href="#fn:docs-link" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>, a package that I recently stumbled across, and whether it is a suitable substitute to <code class="language-plaintext highlighter-rouge">sys.path.insert</code>. A couple of disclaimers:</p>
 
 <ol>
   <li>This is NOT a tutorial on how to use <code class="language-plaintext highlighter-rouge">pkgutil</code>; I leave that to other experts.</li>
@@ -53,7 +53,7 @@
 
 <h2 id="background">Background</h2>
 
-<p>I have been working on code to run robot tasks, which has the following directory structure<sup id="fnref:assitance-arbitration" role="doc-noteref"><a href="#fn:assitance-arbitration" class="footnote" rel="footnote">2</a></sup>:</p>
+<p>I have been working on code to run robot tasks, which has the following directory structure<sup id="fnref:assitance-arbitration"><a href="#fn:assitance-arbitration" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task_executor
 |-- __init__.py
@@ -71,28 +71,28 @@
 
 <p>As a short summary, the <code class="language-plaintext highlighter-rouge">task_executor</code> Python package contains utilities to call robot perception and motion actions in order to complete a task, and its primary interface to the rest of the robot system is through clients defined within the Python subpackage <code class="language-plaintext highlighter-rouge">actions</code>. To make the interface to clients easy, external packages simply import <code class="language-plaintext highlighter-rouge">task_executor.actions</code>, which means that the file <code class="language-plaintext highlighter-rouge">task_executor/actions/__init__.py</code> needs to be kept upto date with all the modules that are defined in the path <code class="language-plaintext highlighter-rouge">task_executor/actions/</code>.</p>
 
-<p>Before my foray into <code class="language-plaintext highlighter-rouge">pkgutil</code>, I manually synchronized <code class="language-plaintext highlighter-rouge">__init__.py</code> with every action update. However, when the number of actions reached 42 (and more), the situation became untenable: I needed a mechanism to automatically find and import action clients from a specified submodule in a package<sup id="fnref:does-not-work" role="doc-noteref"><a href="#fn:does-not-work" class="footnote" rel="footnote">3</a></sup>.</p>
+<p>Before my foray into <code class="language-plaintext highlighter-rouge">pkgutil</code>, I manually synchronized <code class="language-plaintext highlighter-rouge">__init__.py</code> with every action update. However, when the number of actions reached 42 (and more), the situation became untenable: I needed a mechanism to automatically find and import action clients from a specified submodule in a package<sup id="fnref:does-not-work"><a href="#fn:does-not-work" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>.</p>
 
 <h2 id="importing-on-the-path">Importing on the PATH</h2>
 
 <p>Naturally, StackOverflow was my first destination, and it <a href="https://stackoverflow.com/questions/487971/is-there-a-standard-way-to-list-names-of-python-modules-in-a-package">didn’t disappoint</a>. A stub of the code required in <code class="language-plaintext highlighter-rouge">task_executor/actions/__init__.py</code> is:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pkgutil</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">pkgutil</span>
 
 <span class="c1"># First iterate through the directory with pkgutil, and save all
 # the modules that were found in the variable found_packages
 </span><span class="n">pkgname</span> <span class="o">=</span> <span class="n">__package__</span>  <span class="c1"># Should be `task_executor.actions`
-</span><span class="n">pkgpath</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-<span class="n">found_packages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-    <span class="n">pkgutil</span><span class="p">.</span><span class="n">iter_modules</span><span class="p">([</span><span class="n">pkgpath</span><span class="p">],</span>
-                         <span class="n">prefix</span><span class="o">=</span><span class="s">"{}."</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">pkgname</span><span class="p">))]</span>
+</span><span class="n">pkgpath</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">found_packages</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span>
+    <span class="n">pkgutil</span><span class="p">.</span><span class="nf">iter_modules</span><span class="p">([</span><span class="n">pkgpath</span><span class="p">],</span>
+                         <span class="n">prefix</span><span class="o">=</span><span class="sh">"</span><span class="s">{}.</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">pkgname</span><span class="p">))]</span>
 <span class="p">)</span>
 
 <span class="c1"># Then fetch the action names, because each `x` in the list
 # comprehension below is of the form
 # `task_executor.actions.&lt;name&gt;`
-</span><span class="n">action_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">found_packages</span><span class="p">]</span>
+</span><span class="n">action_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">found_packages</span><span class="p">]</span>
 
 <span class="c1"># Get the package importer from the package list too. We will use
 # it for the actual import. Note, that since we only had a single
@@ -103,13 +103,13 @@
 <span class="c1"># Finally, import the actions from the found_packages. Remember
 # that this code can be very prone to exceptions!
 </span><span class="n">actions</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">action_names</span><span class="p">):</span>
-    <span class="n">module</span> <span class="o">=</span> <span class="n">importer</span><span class="p">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">found_packages</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>\
-                     <span class="p">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">found_packages</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">actions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s">"Action"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">action_names</span><span class="p">):</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importer</span><span class="p">.</span><span class="nf">find_module</span><span class="p">(</span><span class="n">found_packages</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>\
+                     <span class="p">.</span><span class="nf">load_module</span><span class="p">(</span><span class="n">found_packages</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">actions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nf">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="sh">"</span><span class="s">Action</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>As easily as that, I now have an <code class="language-plaintext highlighter-rouge">__init__.py</code> that I never have to remember to update when changing one of the many actions that are defined<sup id="fnref:but-caveat" role="doc-noteref"><a href="#fn:but-caveat" class="footnote" rel="footnote">4</a></sup>.</p>
+<p>As easily as that, I now have an <code class="language-plaintext highlighter-rouge">__init__.py</code> that I never have to remember to update when changing one of the many actions that are defined<sup id="fnref:but-caveat"><a href="#fn:but-caveat" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>.</p>
 
 <h2 id="importing-off-the-path">Importing off the PATH</h2>
 
@@ -127,28 +127,28 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
 # a.py
-</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+</span><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
 # b.py
-</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"B"</span><span class="p">)</span>
+</span><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">B</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>In a separate directory (<code class="language-plaintext highlighter-rouge">/home/banerjs/Downloads</code>), I then ran the following:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pkgutil</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pth</span> <span class="o">=</span> <span class="s">"/home/banerjs/foo"</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">iter_modules</span><span class="p">([</span><span class="n">pth</span><span class="p">],</span> <span class="s">"foo."</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">os</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">pkgutil</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pth</span> <span class="o">=</span> <span class="sh">"</span><span class="s">/home/banerjs/foo</span><span class="sh">"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">pkgutil</span><span class="p">.</span><span class="nf">iter_modules</span><span class="p">([</span><span class="n">pth</span><span class="p">],</span> <span class="sh">"</span><span class="s">foo.</span><span class="sh">"</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span>
-<span class="p">[(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7fc64b85c518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.a'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7fc64b85c518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.b'</span><span class="p">,</span> <span class="bp">False</span><span class="p">)]</span>
+<span class="p">[(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7fc64b85c518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.a</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7fc64b85c518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.b</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">)]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]).</span><span class="n">load_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">banerjs</span><span class="o">/</span><span class="n">foo</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span> <span class="nb">RuntimeWarning</span><span class="p">:</span> <span class="n">Parent</span> <span class="n">module</span> <span class="s">'foo'</span> <span class="ow">not</span> <span class="n">found</span> <span class="k">while</span> <span class="n">handling</span> <span class="n">absolute</span> <span class="kn">import</span>
-  <span class="nn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="nn">print_function</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="nf">find_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]).</span><span class="nf">load_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">banerjs</span><span class="o">/</span><span class="n">foo</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span> <span class="nb">RuntimeWarning</span><span class="p">:</span> <span class="n">Parent</span> <span class="n">module</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span> <span class="ow">not</span> <span class="n">found</span> <span class="k">while</span> <span class="n">handling</span> <span class="n">absolute</span> <span class="kn">import</span>
+  <span class="n">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="n">A</span>
 </code></pre></div></div>
 
@@ -160,32 +160,32 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
 # a.py
-</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">.b</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+</span><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="n">.b</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">A</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>And then ran in the previous terminal:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]).</span><span class="n">load_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-  <span class="n">File</span> <span class="s">"/usr/lib/python2.7/pkgutil.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">243</span><span class="p">,</span> <span class="ow">in</span> <span class="n">load_module</span>
-    <span class="n">mod</span> <span class="o">=</span> <span class="n">imp</span><span class="p">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="nb">file</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">etc</span><span class="p">)</span>
-  <span class="n">File</span> <span class="s">"/home/banerjs/foo/a.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-    <span class="kn">from</span> <span class="nn">.b</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="nb">SystemError</span><span class="p">:</span> <span class="n">Parent</span> <span class="n">module</span> <span class="s">'foo'</span> <span class="ow">not</span> <span class="n">loaded</span><span class="p">,</span> <span class="n">cannot</span> <span class="n">perform</span> <span class="n">relative</span> <span class="k">import</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="nf">find_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]).</span><span class="nf">load_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="nc">Traceback </span><span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="sh">"</span><span class="s">&lt;stdin&gt;</span><span class="sh">"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="sh">"</span><span class="s">/usr/lib/python2.7/pkgutil.py</span><span class="sh">"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">243</span><span class="p">,</span> <span class="ow">in</span> <span class="n">load_module</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">imp</span><span class="p">.</span><span class="nf">load_module</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="nb">file</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">etc</span><span class="p">)</span>
+  <span class="n">File</span> <span class="sh">"</span><span class="s">/home/banerjs/foo/a.py</span><span class="sh">"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="kn">from</span> <span class="n">.b</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="nb">SystemError</span><span class="p">:</span> <span class="n">Parent</span> <span class="n">module</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span> <span class="ow">not</span> <span class="n">loaded</span><span class="p">,</span> <span class="n">cannot</span> <span class="n">perform</span> <span class="n">relative</span> <span class="k">import</span>
 </code></pre></div></div>
 
 <p>Sure enough, to perform relative imports, the package <code class="language-plaintext highlighter-rouge">foo</code> must be in the search path and loaded. One can verify this easily with:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pth</span><span class="p">))</span>  <span class="c1"># Old faithful
-</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">importlib</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">importlib</span><span class="p">.</span><span class="n">import_module</span><span class="p">(</span><span class="s">'foo'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">sys</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="n">pth</span><span class="p">))</span>  <span class="c1"># Old faithful
+</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">importlib</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">importlib</span><span class="p">.</span><span class="nf">import_module</span><span class="p">(</span><span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span>
-<span class="o">&lt;</span><span class="n">module</span> <span class="s">'foo'</span> <span class="k">from</span> <span class="s">'/home/banerjs/foo/__init__.py'</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="n">find_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]).</span><span class="n">load_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<span class="o">&lt;</span><span class="n">module</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span> <span class="k">from</span> <span class="sh">'</span><span class="s">/home/banerjs/foo/__init__.py</span><span class="sh">'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="nf">find_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]).</span><span class="nf">load_module</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">B</span>
 <span class="n">A</span>
 </code></pre></div></div>
@@ -204,31 +204,31 @@
 </code></pre></div></div>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
 # d.py
-</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"D"</span><span class="p">)</span>
+</span><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">D</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>And then, in a new terminal, ran the following:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pkgutil</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pth</span> <span class="o">=</span> <span class="s">"/home/banerjs/foo"</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">iter_modules</span><span class="p">([</span><span class="n">pth</span><span class="p">],</span> <span class="s">"foo."</span><span class="p">,</span> <span class="n">onerror</span><span class="o">=</span><span class="k">print</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">os</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">pkgutil</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pth</span> <span class="o">=</span> <span class="sh">"</span><span class="s">/home/banerjs/foo</span><span class="sh">"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">pkgutil</span><span class="p">.</span><span class="nf">iter_modules</span><span class="p">([</span><span class="n">pth</span><span class="p">],</span> <span class="sh">"</span><span class="s">foo.</span><span class="sh">"</span><span class="p">,</span> <span class="n">onerror</span><span class="o">=</span><span class="k">print</span><span class="p">))</span>
 <span class="n">foo</span><span class="p">.</span><span class="n">c</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span>
-<span class="p">[(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d4d73518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.a'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d4d73518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.b'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d4d73518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.c'</span><span class="p">,</span> <span class="bp">True</span><span class="p">)]</span>
+<span class="p">[(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d4d73518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.a</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d4d73518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.b</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d4d73518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.c</span><span class="sh">'</span><span class="p">,</span> <span class="bp">True</span><span class="p">)]</span>
 </code></pre></div></div>
 
 <p>The absence of <code class="language-plaintext highlighter-rouge">d</code> in the output and the presence of the intermediate <code class="language-plaintext highlighter-rouge">foo.c</code> print indicate that <code class="language-plaintext highlighter-rouge">walk_packages</code> also requires <code class="language-plaintext highlighter-rouge">foo</code> to be on the package search paths. We can verify this:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">pth</span><span class="p">))</span>  <span class="c1"># Old faithful
-</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">importlib</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">importlib</span><span class="p">.</span><span class="n">import_module</span><span class="p">(</span><span class="s">'foo'</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">walk_packages</span><span class="p">([</span><span class="n">pth</span><span class="p">],</span> <span class="s">"foo."</span><span class="p">,</span> <span class="k">print</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">sys</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="n">pth</span><span class="p">))</span>  <span class="c1"># Old faithful
+</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="n">importlib</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">importlib</span><span class="p">.</span><span class="nf">import_module</span><span class="p">(</span><span class="sh">'</span><span class="s">foo</span><span class="sh">'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">pkgutil</span><span class="p">.</span><span class="nf">walk_packages</span><span class="p">([</span><span class="n">pth</span><span class="p">],</span> <span class="sh">"</span><span class="s">foo.</span><span class="sh">"</span><span class="p">,</span> <span class="k">print</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span>
-<span class="p">[(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.a'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.b'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e518</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.c'</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e680</span><span class="o">&gt;</span><span class="p">,</span> <span class="s">'foo.c.d'</span><span class="p">,</span> <span class="bp">False</span><span class="p">)]</span>
+<span class="p">[(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.a</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.b</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e518</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.c</span><span class="sh">'</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">pkgutil</span><span class="p">.</span><span class="n">ImpImporter</span> <span class="n">instance</span> <span class="n">at</span> <span class="mh">0x7f31d2c3e680</span><span class="o">&gt;</span><span class="p">,</span> <span class="sh">'</span><span class="s">foo.c.d</span><span class="sh">'</span><span class="p">,</span> <span class="bp">False</span><span class="p">)]</span>
 </code></pre></div></div>
 
 <h2 id="conclusions">Conclusions</h2>
@@ -239,16 +239,16 @@
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:docs-link" role="doc-endnote">
+    <li id="fn:docs-link">
       <p><a href="http://docs.python.org/library/pkgutil.html">link</a> <a href="#fnref:docs-link" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:assitance-arbitration" role="doc-endnote">
+    <li id="fn:assitance-arbitration">
       <p>Some of the code is <a href="https://github.com/GT-RAIL/assistance_arbitration">here</a>; but there will be more details on it at a later date. <a href="#fnref:assitance-arbitration" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:does-not-work" role="doc-endnote">
+    <li id="fn:does-not-work">
       <p>Unfortunately, due to various reasons still unclear to me, <code class="language-plaintext highlighter-rouge">dir(task_executor.actions)</code> did not magically list all the modules that I wanted… <a href="#fnref:does-not-work" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:but-caveat" role="doc-endnote">
+    <li id="fn:but-caveat">
       <p>There are a few caveats, such as the fact that the naming convention within the actions have to be standardized, etc. However, as caveats go, they aren’t too bad. <a href="#fnref:but-caveat" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
