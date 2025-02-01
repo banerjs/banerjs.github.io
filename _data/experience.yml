@@ -1,10 +1,12 @@
 - title: Robotics Software Engineer
   company: Diligent Robotics
-  period: 2021 - current
+  period: 2021 - 2024
   description: |-
-    - Lead for remote operations
-    - Developing ROS packages to improve robot autonomy
-    - Developing interfaces to monitor and teleoperate robot
+    - Led remote operations dev team; contributed across the stack
+    - Headed regular architecture reviews with the CTO
+    - Scaled remote operations from a fleet of 1-3 robots to a fleet of >100 robots across multiple client sites
+    - Integrated new systems, vendors, and hardware
+    - Maintained the robot's task scheduler and executor
 
 - title: Robotics Intern
   company: Diligent Robotics
@@ -12,14 +14,14 @@
   description: |-
     - Worked on the navigation stack
     - Implemented a web interface to control the robot
-    - Designed and implemented numerous ROS packages
+    - Created initial ROS packages for robot
 
 - title: Research Intern
   company: Microsoft
   period: Summer 2017
   description: |-
     - Worked with Situated Interaction Group
-    - Setup a system for in-the-wild activity recognition, with a focus on interaction
+    - Setup a system for in-the-wild activity recognition, with a focus on learning from interactions
 
 - title: Software Engineer II
   company: Redfin
