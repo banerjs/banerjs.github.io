@@ -42,7 +42,7 @@ Last Updated on \today
 % Name command
 \newcommand{\namesection}[3]{
 \centering{
-\fontsize{40pt}{60pt}
+\fontsize{25pt}{45pt}
 \fontspec[Path = ../fonts/]{Lato-Hai}\selectfont #1
 \fontspec[Path = ../fonts/]{Lato-Lig}\selectfont #2
 } \\[5pt]
@@ -57,7 +57,7 @@ Last Updated on \today
 \usepackage{titlesec}
 \titlespacing{\section}{0pt}{0pt}{0pt}
 \titlespacing{\subsection}{0pt}{0pt}{0pt}
-\newcommand{\sectionsep}{\vspace{8pt}}
+\newcommand{\sectionsep}{\vspace{4pt}}
 
 % Headings command
 \titleformat{\section}{\color{headings}

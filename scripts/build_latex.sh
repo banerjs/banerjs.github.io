@@ -2,6 +2,13 @@
 # Build the latex files
 set -ev
 
+SCRIPT_DIR=$
+
+if ! which xelatex; then
+    docker run --rm -v $(pwd):/usr/src banerjs/banerjs.github.io:builder bash scripts/build_latex.sh
+    exit $?
+fi
+
 # Navigate to the pdf's directory
 cd _pdf/
 
