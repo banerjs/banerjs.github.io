@@ -2,7 +2,7 @@
 set -euo pipefail # Exit with nonzero exit code if anything fails
 
 SOURCE_BRANCH="dev"
-TARGET_BRANCH="master"
+TARGET_BRANCH="main"
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_CHANGES=$(git status --porcelain)
