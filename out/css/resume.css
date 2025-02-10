@@ -1,0 +1,96 @@
+/* http://meyerweb.com/eric/tools/css/reset/ v2.0 | 20110126 License: none (public domain) */
+@import url(https://fonts.googleapis.com/css?family=Lora:400,700|Playfair+Display:400,700,900);
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; box-sizing: border-box; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+
+body { line-height: 1; }
+
+ol, ul { list-style: none; }
+
+blockquote, q { quotes: none; }
+
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+body { font-family: "Lora", Helvetica, Arial, sans-serif, serif; font-size: 1.1em; line-height: 1.4; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+.section-title { text-transform: uppercase; letter-spacing: 4px; margin-bottom: 40px; text-align: center; position: relative; }
+
+.section-title:after { content: ''; position: absolute; bottom: -5px; left: 50%; margin-left: -25px; width: 50px; height: 1px; background: #222; }
+
+header { border-bottom: 1px solid #edefee; padding: 40px 0; margin-bottom: 40px; }
+
+@media (min-width: 640px) { header { padding: 200px 0 60px; margin-bottom: 60px; } }
+
+.intro { margin-bottom: 40px; }
+
+@media (min-width: 640px) { .intro { max-width: 60%; } }
+
+.intro__pre, .intro__post { text-transform: uppercase; letter-spacing: 4px; }
+
+.intro__main { font-size: 1.8rem; line-height: 1.2; font-weight: bold; margin: 10px 0 20px; }
+
+@media (min-width: 640px) { .intro__main { font-size: 2.2rem; } }
+
+.image { max-width: 40%; float: right; }
+
+@media (max-width: 640px) { .image { display: none; } }
+
+.image img { border-radius: 25px; }
+
+.social a { margin-right: 20px; }
+
+.footer { padding: 40px 20px; text-align: center; border-top: 1px solid #edefee; }
+
+.footer__title { font-size: 1.2rem; font-weight: bold; }
+
+.footer__subtitle { text-transform: capitalize; }
+
+.footer__credits { font-size: 0.7rem; }
+
+dl { margin-bottom: 20px; }
+
+dt, dd { display: inline-block; vertical-align: top; margin-bottom: 20px; }
+
+ol { margin-bottom: 20px; }
+
+ol li { display: inline-block; vertical-align: top; margin-bottom: 20px; }
+
+@media (min-width: 640px) { .experience dt { width: 40%; padding-right: 40px; } .experience dd { width: 60%; } .education dt, .education dd { width: 50%; } }
+
+.title { margin: 0; font-weight: bold; font-size: 1.2rem; }
+
+.bibtex > .link, a { color: black !important; background: rgba(245, 215, 110, 0.5); transition: all linear .2s; }
+
+.bibtex > .link:hover, a:hover { background: #f5d76e; text-decoration: none; }
+
+.description a { background: white; }
+
+.bibtex .link { text-decoration: underline; }
+
+.bibtex pre { font-family: monospace, monospace; overflow: auto; padding: 1rem; word-wrap: normal; white-space: pre; background-color: #eee; border: 1px solid #999; font-size: 0.7rem; display: none; }
+
+.other ul { list-style: none; text-align: center; margin-bottom: 20px; }
+
+.other ul li { display: inline; margin-right: 20px; }
+
+.other a { background: white; }
+
+.other a:hover { background: white; }
+
+.research-statement { margin-bottom: 40px; }
+
+.research-statement .section-title { margin-bottom: 20px; }
+
+.research-statement p { text-align: center; margin-bottom: 20px; }
+
+.research-statement ul { list-style: none; text-align: center; margin-bottom: 20px; }
+
+.research-statement ul li { display: inline; margin-right: 20px; }
+
+/*# sourceMappingURL=resume.css.map */
