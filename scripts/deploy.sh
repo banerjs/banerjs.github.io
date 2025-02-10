@@ -55,4 +55,4 @@ git push $SSH_REPO $TARGET_BRANCH
 
 # Finally, nuke the temp folder
 cd ..
-/bin/rm -r out/
+/bin/rm -rf out/
