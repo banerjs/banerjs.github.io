@@ -20,6 +20,7 @@
 
 \documentclass[]{deedy-resume}
 \usepackage{fancyhdr}
+\usepackage{etoolbox}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -82,6 +83,7 @@ GPA: 3.7 / 4.0
 %     LINKS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\vspace{0.3cm}
 \section{Links}
 Github:// \href{https://github.com/banerjs}{\bf banerjs} \\
 LinkedIn://  \href{https://www.linkedin.com/in/banerjs}{\bf banerjs} \\
@@ -90,6 +92,7 @@ LinkedIn://  \href{https://www.linkedin.com/in/banerjs}{\bf banerjs} \\
 %     COURSEWORK
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\vspace{0.3cm}
 \section{Coursework}
 \subsection{Graduate}
 Artificial Intelligence {\scriptsize (Student \& TA)} \\
@@ -116,6 +119,7 @@ Mobile Computing \& Wireless Networks \\
 %     Programming
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\vspace{0.3cm}
 \section{Programming}
 \subsection{Languages}
 Python \textbullet{} C++ \textbullet{} C \textbullet{} Java \textbullet{} C\# \\
@@ -175,27 +179,16 @@ gRPC \textbullet{} SocketIO \textbullet{} WebRTC (basic)
 \end{tightemize}
 \sectionsep
 
-% \runsubsection{Microsoft}
-% \descript{| Hardware Verification Intern }
-% \location{May 2012 – August 2012 | Mountain View, CA}
-% % \vspace{0.3cm}
-% \begin{tightemize}
-% \item VLSI hardware verification and testing for the Xbox One
-% \item Used waveform analysis and BIOS Kernel Developer Specifications to test a System-on-Chip
-% \end{tightemize}
-% \sectionsep
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     AWARDS & Leadership
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\vspace{-0.3cm}
 \section{Awards \& Leadership}
 \begin{tabular}{rll}
 2019 & Panel Chair & HRI Pioneers Workshop \\
 2017--2018 & President & Georgia Tech RoboGrads \\
-% 2016--2017 & Social Chair & Georgia Tech RoboGrads \\
 2014 & Employee of Quarter & Redfin \\
-% 2012--2013 & Team Mentor & Yale Formula Hybrid FSAE Team \\
 2011 & Fellow & Yale Entrepreneurial Institute Summer Fellowship \\
 2011--2012 & Vice-President & Yale Formula Hybrid FSAE Team
 \end{tabular}
@@ -205,8 +198,16 @@ gRPC \textbullet{} SocketIO \textbullet{} WebRTC (basic)
 %     NOTABLE PUBLICATIONS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\vspace{-0.3cm}
 \section{Notable Publications}
-\renewcommand\refname{\vskip -0.8cm} % Couldn't get this working from the .cls file
+\patchcmd{\thebibliography}
+  {\settowidth}
+  {\setlength{\parsep}{0pt}\setlength{\itemsep}{0pt plus 0.1pt}\settowidth}
+  {}{}
+% \apptocmd{\thebibliography}
+%   {\small}
+%   {}{}
+\renewcommand\refname{\vskip -0.9cm} % Couldn't get this working from the .cls file
 \bibliographystyle{IEEEtran}
 \bibliography{../_bibliography/resume}
 \nocite{*}
@@ -215,6 +216,7 @@ gRPC \textbullet{} SocketIO \textbullet{} WebRTC (basic)
 %     SELECT PROJECTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\vspace{-0.3cm}
 \section{Select Projects}
 \runsubsection{FetchIt! Challenge}
 \descript{| Robotics Competition}
@@ -226,7 +228,6 @@ Developed robot software to complete a mobile manipulation challenge at the ICRA
 \descript{| Student Organization}
 \location{2009 - 2013 | Yale}
 Designed and built formula style gas-electric hybrid cars to compete nationally. Team won several awards including Best Hybrid Car (2013), Ford Efficiency (2013), Chrysler Innovation (2013), \& GM Best Engineered Hybrid System (2010, 2013)
-\sectionsep
 
 \end{minipage}
 \end{document}
