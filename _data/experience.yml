@@ -2,12 +2,13 @@
   company: Diligent Robotics
   period: 2021 - 2024
   description: |-
-    - Led remote operations dev team; contributed across the stack
-    - Headed regular architecture reviews with the CTO
-    - Scaled remote operations from a fleet of 1-3 robots to a fleet of >100 robots across multiple client sites
-    - Integrated new systems, vendors, and hardware
-    - Assisted with client implementations, particularly w.r.t. networking
-    - Maintained the robot's task scheduler and executor
+    - Led a team on cloud and robot applications
+    - Conducted monthly architecture reviews with the CTO on projects, vendors, tech debt, and system health
+    - Scaled remote operations from a fleet of 1 robot to a fleet of 100+ robots across 30+ clients
+    - Contributed across the full software stack, from low-level drivers to high-level cloud services
+    - Enabled new hospital workflows and improved robot reliability while also scaling operator-to-robot ratios
+    - Integrated new systems, onboarded vendors, incorporated new hardware, and supported client implementations
+    - Primary developer and maintainer of remote operations, task execution, and scheduling
 
 - title: Robotics Intern
   company: Diligent Robotics
@@ -21,8 +22,9 @@
   company: Microsoft
   period: Summer 2017
   description: |-
-    - Worked with Situated Interaction Group
-    - Setup a system for in-the-wild activity recognition, with a focus on learning from interactions
+    - Worked with the <a href="https://www.microsoft.com/en-us/research/project/situated-interaction/">Situated Interaction Group</a>
+    - Setup a robot to update activity recognition models in-the-wild
+    - Evaluated person and pose detection algorithms on the robot
 
 - title: Software Engineer II
   company: Redfin
@@ -30,9 +32,9 @@
   description: |-
     - Employee of the Quarter (Q3 2014)
     - Designed and maintained ETL pipeline for house listing data
-    - Integrated 3rd party GIS data
+    - Integrated GIS data from multiple providers
+    - Built tools for data disambiguation
     - Calculated and displayed aggregate housing data for regions
-    - Maintained internal tools for managing agents and locations
 
 - title: Hardware Verification Intern
   company: Microsoft
